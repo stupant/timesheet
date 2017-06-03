@@ -7,6 +7,9 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
+                "entryCategory": "범주",
+                "timesheet": "출퇴근 시간 기록 용지",
+                "entry": "목",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
