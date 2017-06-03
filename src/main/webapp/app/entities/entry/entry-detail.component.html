@@ -20,6 +20,10 @@
         <dd>
             <span>{{entry.category}}</span>
         </dd>
+        <dt><span jhiTranslate="timesheetApp.entry.day">Day</span></dt>
+        <dd>
+            <span>{{entry.day | date:'mediumDate'}}</span>
+        </dd>
     </dl>
 
     <button type="submit"

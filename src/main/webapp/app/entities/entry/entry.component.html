@@ -21,6 +21,7 @@
             <th jhiSortBy="hour"><span jhiTranslate="timesheetApp.entry.hour">Hour</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="notes"><span jhiTranslate="timesheetApp.entry.notes">Notes</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="category"><span jhiTranslate="timesheetApp.entry.category">Category</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="day"><span jhiTranslate="timesheetApp.entry.day">Day</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -31,6 +32,7 @@
                 <td>{{entry.hour}}</td>
                 <td>{{entry.notes}}</td>
                 <td>{{entry.category}}</td>
+                <td>{{entry.day | date:'mediumDate'}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

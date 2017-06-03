@@ -21,6 +21,13 @@ export class EntryPopupService {
 
         if (id) {
             this.entryService.find(id).subscribe((entry) => {
+                if (entry.day) {
+                    entry.day = {
+                        year: entry.day.getFullYear(),
+                        month: entry.day.getMonth() + 1,
+                        day: entry.day.getDate()
+                    };
+                }
                 this.entryModalRef(component, entry);
             });
         } else {
