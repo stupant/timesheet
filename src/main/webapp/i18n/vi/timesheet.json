@@ -1,0 +1,28 @@
+{
+    "timesheetApp": {
+        "timesheet" : {
+            "home": {
+                "title": "Timesheets",
+                "createLabel": "Thêm mới một Timesheet",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Timesheet"
+            },
+            "created": "Một Timesheet mới được tạo với định danh {{ param }}",
+            "updated": "Một Timesheet cập nhật với định danh {{ param }}",
+            "deleted": "Một Timesheet đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Timesheet {{ id }}?"
+            },
+            "detail": {
+                "title": "Timesheet"
+            },
+            "user": "User",
+            "week": "Week",
+            "year": "Year",
+            "submitAt": "Submit At",
+            "updatedAt": "Updated At",
+            "updatedBy": "Updated By",
+            "summary": "Summary",
+            "totalHours": "Total Hours"
+        }
+    }
+}

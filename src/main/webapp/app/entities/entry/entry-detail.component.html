@@ -1,0 +1,37 @@
+
+<div *ngIf="entry">
+    <h2><span jhiTranslate="timesheetApp.entry.detail.title">Entry</span> {{entry.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="timesheetApp.entry.user">User</span></dt>
+        <dd>
+            <span>{{entry.user}}</span>
+        </dd>
+        <dt><span jhiTranslate="timesheetApp.entry.hour">Hour</span></dt>
+        <dd>
+            <span>{{entry.hour}}</span>
+        </dd>
+        <dt><span jhiTranslate="timesheetApp.entry.notes">Notes</span></dt>
+        <dd>
+            <span>{{entry.notes}}</span>
+        </dd>
+        <dt><span jhiTranslate="timesheetApp.entry.category">Category</span></dt>
+        <dd>
+            <span>{{entry.category}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'entry/'+ entry.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
