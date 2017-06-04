@@ -9,6 +9,7 @@
                 "main": "Entities",
                 "entryCategory": "Entry Category",
                 "timesheet": "Timesheet",
+                "timesheetAdmin": "Timesheet Approval",
                 "entry": "Entries",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },

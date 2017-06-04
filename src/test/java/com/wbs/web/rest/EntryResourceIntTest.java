@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.Base64Utils;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,6 +49,9 @@ public class EntryResourceIntTest {
 
     private static final String DEFAULT_CATEGORY = "AAAAAAAAAA";
     private static final String UPDATED_CATEGORY = "BBBBBBBBBB";
+
+    private static final LocalDate DEFAULT_DAY = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DAY = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
     private EntryRepository entryRepository;
@@ -85,7 +90,8 @@ public class EntryResourceIntTest {
             .user(DEFAULT_USER)
             .hour(DEFAULT_HOUR)
             .notes(DEFAULT_NOTES)
-            .category(DEFAULT_CATEGORY);
+            .category(DEFAULT_CATEGORY)
+            .day(DEFAULT_DAY);
         return entry;
     }
 
@@ -113,6 +119,7 @@ public class EntryResourceIntTest {
         assertThat(testEntry.getHour()).isEqualTo(DEFAULT_HOUR);
         assertThat(testEntry.getNotes()).isEqualTo(DEFAULT_NOTES);
         assertThat(testEntry.getCategory()).isEqualTo(DEFAULT_CATEGORY);
+        assertThat(testEntry.getDay()).isEqualTo(DEFAULT_DAY);
     }
 
     @Test
@@ -185,6 +192,23 @@ public class EntryResourceIntTest {
     }
 
     @Test
+    public void checkDayIsRequired() throws Exception {
+        int databaseSizeBeforeTest = entryRepository.findAll().size();
+        // set the field null
+        entry.setDay(null);
+
+        // Create the Entry, which fails.
+
+        restEntryMockMvc.perform(post("/api/entries")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(entry)))
+            .andExpect(status().isBadRequest());
+
+        List<Entry> entryList = entryRepository.findAll();
+        assertThat(entryList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
     public void getAllEntries() throws Exception {
         // Initialize the database
         entryRepository.save(entry);
@@ -197,7 +221,8 @@ public class EntryResourceIntTest {
             .andExpect(jsonPath("$.[*].user").value(hasItem(DEFAULT_USER.toString())))
             .andExpect(jsonPath("$.[*].hour").value(hasItem(DEFAULT_HOUR)))
             .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES.toString())))
-            .andExpect(jsonPath("$.[*].category").value(hasItem(DEFAULT_CATEGORY.toString())));
+            .andExpect(jsonPath("$.[*].category").value(hasItem(DEFAULT_CATEGORY.toString())))
+            .andExpect(jsonPath("$.[*].day").value(hasItem(DEFAULT_DAY.toString())));
     }
 
     @Test
@@ -213,7 +238,8 @@ public class EntryResourceIntTest {
             .andExpect(jsonPath("$.user").value(DEFAULT_USER.toString()))
             .andExpect(jsonPath("$.hour").value(DEFAULT_HOUR))
             .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES.toString()))
-            .andExpect(jsonPath("$.category").value(DEFAULT_CATEGORY.toString()));
+            .andExpect(jsonPath("$.category").value(DEFAULT_CATEGORY.toString()))
+            .andExpect(jsonPath("$.day").value(DEFAULT_DAY.toString()));
     }
 
     @Test
@@ -235,7 +261,8 @@ public class EntryResourceIntTest {
             .user(UPDATED_USER)
             .hour(UPDATED_HOUR)
             .notes(UPDATED_NOTES)
-            .category(UPDATED_CATEGORY);
+            .category(UPDATED_CATEGORY)
+            .day(UPDATED_DAY);
 
         restEntryMockMvc.perform(put("/api/entries")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -250,6 +277,7 @@ public class EntryResourceIntTest {
         assertThat(testEntry.getHour()).isEqualTo(UPDATED_HOUR);
         assertThat(testEntry.getNotes()).isEqualTo(UPDATED_NOTES);
         assertThat(testEntry.getCategory()).isEqualTo(UPDATED_CATEGORY);
+        assertThat(testEntry.getDay()).isEqualTo(UPDATED_DAY);
     }
 
     @Test

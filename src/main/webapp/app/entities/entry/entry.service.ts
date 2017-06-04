@@ -10,6 +10,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class EntryService {
 
     private resourceUrl = 'api/entries';
+    entities: Entry[] = [];
 
     constructor(private http: Http, private dateUtils: DateUtils) { }
 

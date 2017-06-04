@@ -1,70 +1,46 @@
 <div>
+    <div class="btn-group float-right">
+      <button class="btn btn-warning" (click)="prev()">
+        <span class="fa fa-caret-left"></span>
+        <span  jhiTranslate="timesheetApp.timesheet.home.previousLabel">
+          Previous Week
+        </span>
+      </button>
+      <button class="btn btn-primary" [routerLink]="['/', { outlets: { popup: ['timesheet-new'] } }]">
+        <span class="fa fa-plus"></span>
+        <span  jhiTranslate="timesheetApp.timesheet.home.currentLabel">
+          This Week
+        </span>
+      </button>
+      <button class="btn btn-success" (click)="next()">
+        <span class="fa fa-caret-right"></span>
+        <span  jhiTranslate="timesheetApp.timesheet.home.nextLabel">
+          Next Week
+        </span>
+      </button>
+    </div>
     <h2>
-        <span jhiTranslate="timesheetApp.timesheet.home.title">Timesheets</span>
-        <button class="btn btn-primary float-right create-timesheet" [routerLink]="['/', { outlets: { popup: ['timesheet-new'] } }]">
-            <span class="fa fa-plus"></span>
-            <span  jhiTranslate="timesheetApp.timesheet.home.createLabel">
-            Create new Timesheet
-            </span>
-        </button>
+        <span jhiTranslate="timesheetApp.timesheet.home.title">Timesheets</span> {{ timesheet.year }} - {{ timesheet.week }}
+        <small>{{ timesheet.getDate(timesheet.week, timesheet.year) }}</small>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
-    <br/>
-    <div class="table-responsive" *ngIf="timesheets">
-        <table class="table table-striped">
-            <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="user"><span jhiTranslate="timesheetApp.timesheet.user">User</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="week"><span jhiTranslate="timesheetApp.timesheet.week">Week</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="year"><span jhiTranslate="timesheetApp.timesheet.year">Year</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="submitAt"><span jhiTranslate="timesheetApp.timesheet.submitAt">Submit At</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="updatedAt"><span jhiTranslate="timesheetApp.timesheet.updatedAt">Updated At</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="updatedBy"><span jhiTranslate="timesheetApp.timesheet.updatedBy">Updated By</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="summary"><span jhiTranslate="timesheetApp.timesheet.summary">Summary</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="totalHours"><span jhiTranslate="timesheetApp.timesheet.totalHours">Total Hours</span> <span class="fa fa-sort"></span></th>
-            <th></th>
-            </tr>
-            </thead>
-            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
-            <tr *ngFor="let timesheet of timesheets ;trackBy: trackId">
-                <td><a [routerLink]="['../timesheet', timesheet.id ]">{{timesheet.id}}</a></td>
-                <td>{{timesheet.user}}</td>
-                <td>{{timesheet.week}}</td>
-                <td>{{timesheet.year}}</td>
-                <td>{{timesheet.submitAt | date:'medium'}}</td>
-                <td>{{timesheet.updatedAt | date:'medium'}}</td>
-                <td>{{timesheet.updatedBy}}</td>
-                <td>{{timesheet.summary}}</td>
-                <td>{{timesheet.totalHours}}</td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../timesheet', timesheet.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'timesheet/'+ timesheet.id + '/edit'} }]"
-                                replaceUrl="true"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'timesheet/'+ timesheet.id + '/delete'} }]"
-                                replaceUrl="true"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <hr/>
+    <div class="timesheet-detail">
+      <div class="row text-center">
+        <div class="col" *ngFor="let i of dow; let j=index;">
+          <h4 jhiTranslate="timesheetApp.timesheet.{{i}}">{{ i }}</h4>
+          <small>{{ date(j) }}</small>
+          <hr/>
+
+          <hr/>
+          <button class="btn btn-default" (click)="addEntry()">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="timesheetApp.entry.home.createLabel">
+            Create new Entry
+            </span>
+          </button>
+        </div>
+
+      </div>
     </div>
 </div>

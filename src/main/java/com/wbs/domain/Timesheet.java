@@ -48,8 +48,19 @@ public class Timesheet implements Serializable {
 
     @Field("total_hours")
     private Integer totalHours;
+    
+    @Field("entries")
+    private Entry entries;
 
-    public String getId() {
+    public Entry getEntries() {
+		return entries;
+	}
+
+	public void setEntries(Entry entries) {
+		this.entries = entries;
+	}
+
+	public String getId() {
         return id;
     }
 

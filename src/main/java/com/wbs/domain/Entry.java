@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -36,6 +37,10 @@ public class Entry implements Serializable {
     @NotNull
     @Field("category")
     private String category;
+
+    @NotNull
+    @Field("day")
+    private LocalDate day;
 
     public String getId() {
         return id;
@@ -97,6 +102,19 @@ public class Entry implements Serializable {
         this.category = category;
     }
 
+    public LocalDate getDay() {
+        return day;
+    }
+
+    public Entry day(LocalDate day) {
+        this.day = day;
+        return this;
+    }
+
+    public void setDay(LocalDate day) {
+        this.day = day;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -125,6 +143,7 @@ public class Entry implements Serializable {
             ", hour='" + getHour() + "'" +
             ", notes='" + getNotes() + "'" +
             ", category='" + getCategory() + "'" +
+            ", day='" + getDay() + "'" +
             "}";
     }
 }

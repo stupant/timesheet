@@ -35,6 +35,12 @@
                         </a>
                     </li>
                     <li>
+                        <a class="dropdown-item" routerLink="timesheet-admin" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-calendar-check-o" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.timesheetAdmin">Timesheet Administration</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="dropdown-item" routerLink="timesheet" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-calendar" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.timesheet">Timesheet</span>

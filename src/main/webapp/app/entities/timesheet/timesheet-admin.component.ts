@@ -8,16 +8,13 @@ import { TimesheetService } from './timesheet.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 
-import { Entry, EntryService } from '../entry';
-import * as moment from 'moment';
-
 @Component({
     selector: 'jhi-timesheet',
-    templateUrl: './timesheet.component.html'
+    templateUrl: './timesheet-admin.component.html'
 })
-export class TimesheetComponent implements OnInit, OnDestroy {
+export class TimesheetAdminComponent implements OnInit, OnDestroy {
 
-    timesheet: Timesheet = new Timesheet();
+    timesheets: Timesheet[];
     currentAccount: any;
     eventSubscriber: Subscription;
     itemsPerPage: number;
@@ -27,17 +24,16 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     queryCount: any;
     reverse: any;
     totalItems: number;
-    dow = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 
     constructor(
-        public timesheetService: TimesheetService,
-        public entry: EntryService,
+        private timesheetService: TimesheetService,
         private alertService: AlertService,
         private dataUtils: DataUtils,
         private eventManager: EventManager,
         private parseLinks: ParseLinks,
-        private principal: Principal,
+        private principal: Principal
     ) {
+        this.timesheets = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.page = 0;
         this.links = {
@@ -48,19 +44,19 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
-        this.entry.query({
-            query: this.timesheet.year + ',' + this.timesheet.week,
+        this.timesheetService.query({
             page: this.page,
-            size: 10000,
+            size: this.itemsPerPage,
             sort: this.sort()
         }).subscribe(
-            (res: ResponseWrapper) => this.entry.entities = res.json,
-            (res: ResponseWrapper) => console.error(res.json)
+            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
+            (res: ResponseWrapper) => this.onError(res.json)
             );
     }
 
     reset() {
         this.page = 0;
+        this.timesheets = [];
         this.loadAll();
     }
 
@@ -103,20 +99,15 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         return result;
     }
 
-    prev() {
-        this.timesheet.hasDate(moment(this.timesheet.today.toString()).subtract(7, 'days').toDate());
-        this.loadAll();
-    }
-    next() {
-        this.timesheet.hasDate(moment(this.timesheet.today.toString()).add(7, 'days').toDate());
-        this.loadAll();
-    }
-
-    date(i: number) {
-        return moment(this.timesheet.today.toString()).add(i, 'days').format('YYYY-MM-DD');
+    private onSuccess(data, headers) {
+        this.links = this.parseLinks.parse(headers.get('link'));
+        this.totalItems = headers.get('X-Total-Count');
+        for (let i = 0; i < data.length; i++) {
+            this.timesheets.push(data[i]);
+        }
     }
 
-    addEntry() {
-        console.log('Todo: Create a new entry here');
+    private onError(error) {
+        this.alertService.error(error.message, null, null);
     }
 }

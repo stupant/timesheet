@@ -9,6 +9,7 @@
                 "main": "Thực thể",
                 "entryCategory": "Danh mục Công việc",
                 "timesheet": "Bảng chấm công",
+                "timesheetApproval": "Duyệt Bảng chấm công",
                 "entry": "Mục",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },

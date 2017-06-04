@@ -18,7 +18,8 @@
             "user": "User",
             "hour": "Hour",
             "notes": "Notes",
-            "category": "Category"
+            "category": "Category",
+            "day": "Day"
         }
     }
 }

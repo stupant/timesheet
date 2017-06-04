@@ -10,6 +10,10 @@ import { Timesheet } from './timesheet.model';
 import { TimesheetPopupService } from './timesheet-popup.service';
 import { TimesheetService } from './timesheet.service';
 
+import { Entry, EntryService } from '../entry';
+
+import { ResponseWrapper, Principal, AccountService } from '../../shared';
+
 @Component({
     selector: 'jhi-timesheet-dialog',
     templateUrl: './timesheet-dialog.component.html'
@@ -21,17 +25,23 @@ export class TimesheetDialogComponent implements OnInit {
     isSaving: boolean;
 
     constructor(
+        public timesheetService: TimesheetService,
+        public entry: EntryService,
         public activeModal: NgbActiveModal,
         private dataUtils: DataUtils,
         private alertService: AlertService,
-        private timesheetService: TimesheetService,
-        private eventManager: EventManager
+        private eventManager: EventManager,
+        private account: AccountService,
+        private principal: Principal,
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
+        this.principal.identity().then((account) => {
+            this.timesheet.user = account.email;
+        });
     }
     byteSize(field) {
         return this.dataUtils.byteSize(field);

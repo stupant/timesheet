@@ -10,13 +10,6 @@
             ]
         },
         {
-            "fieldName": "date",
-            "fieldType": "ZonedDateTime",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
             "fieldName": "hour",
             "fieldType": "Integer",
             "fieldValidateRules": [
@@ -35,6 +28,13 @@
         {
             "fieldName": "category",
             "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "day",
+            "fieldType": "LocalDate",
             "fieldValidateRules": [
                 "required"
             ]

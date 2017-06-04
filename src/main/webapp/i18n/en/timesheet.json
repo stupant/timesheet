@@ -3,6 +3,10 @@
         "timesheet" : {
             "home": {
                 "title": "Timesheets",
+                "admin": "Administration",
+                "previousLabel": "Previous week",
+                "currentLabel": "This week",
+                "nextLabel": "Next week",
                 "createLabel": "Create a new Timesheet",
                 "createOrEditLabel": "Create or edit a Timesheet"
             },
@@ -22,7 +26,14 @@
             "updatedAt": "Updated At",
             "updatedBy": "Updated By",
             "summary": "Summary",
-            "totalHours": "Total Hours"
+            "totalHours": "Total Hours",
+            "mon": "Monday",
+            "tue": "Tuesday",
+            "wed": "Wednesday",
+            "thu": "Thursday",
+            "fri": "Friday",
+            "sat": "Saturday",
+            "sun": "Sunday"
         }
     }
 }
