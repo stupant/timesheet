@@ -7,8 +7,9 @@ import { Timesheet } from './timesheet.model';
 import { TimesheetService } from './timesheet.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { Entry, EntryService } from '../entry';
+import { Entry, EntryService, EntryPopupService, EntryDialogComponent } from '../entry';
 import * as moment from 'moment';
 
 @Component({
@@ -27,11 +28,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     queryCount: any;
     reverse: any;
     totalItems: number;
+    modalRef: NgbModalRef;
     dow = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    entries: any = {};
 
     constructor(
         public timesheetService: TimesheetService,
         public entry: EntryService,
+        private entryPopupService: EntryPopupService,
         private alertService: AlertService,
         private dataUtils: DataUtils,
         private eventManager: EventManager,
@@ -48,15 +52,26 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
+        this.entries = {};
         this.entry.query({
             query: this.timesheet.year + ',' + this.timesheet.week,
             page: this.page,
             size: 10000,
             sort: this.sort()
         }).subscribe(
-            (res: ResponseWrapper) => this.entry.entities = res.json,
-            (res: ResponseWrapper) => console.error(res.json)
-            );
+            (res: ResponseWrapper) => {
+              this.entry.entities = res.json;
+              res.json.forEach((i) => {
+                console.log(i);
+                const key = moment(i.day.toString()).format('YYYY-MM-DD');
+                if (!this.entries[key]) {
+                  this.entries[key] = [];
+                }
+                this.entries[key].push(i);
+              });
+              console.log(this.entries);
+            }, (res: ResponseWrapper) => console.error(res.json)
+        );
     }
 
     reset() {
@@ -93,6 +108,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
     registerChangeInTimesheets() {
         this.eventSubscriber = this.eventManager.subscribe('timesheetListModification', (response) => this.reset());
+        this.eventSubscriber = this.eventManager.subscribe('entryListModification', (response) => this.reset());
     }
 
     sort() {
@@ -116,7 +132,14 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         return moment(this.timesheet.today.toString()).add(i, 'days').format('YYYY-MM-DD');
     }
 
-    addEntry() {
-        console.log('Todo: Create a new entry here');
+    addEntry(d: string) {
+        this.entry.entity = new Entry();
+        const date = moment(d);
+        this.entry.entity.day = { year: date.year(), month: date.month() + 1, day: date.date() };
+        this.modalRef = this.entryPopupService.openEntity(EntryDialogComponent);
+    }
+    editEntry(e: Entry) {
+        this.entry.entity = Object.assign({}, e);
+        this.modalRef = this.entryPopupService.openEntity(EntryDialogComponent);
     }
 }

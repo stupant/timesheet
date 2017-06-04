@@ -35,6 +35,14 @@ export class EntryPopupService {
         }
     }
 
+    openEntity(component: Component): NgbModalRef {
+        if (this.isOpen) {
+            return;
+        }
+        this.isOpen = true;
+        return this.entryModalRef(component, this.entryService.entity);
+    }
+
     entryModalRef(component: Component, entry: Entry): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.entry = entry;

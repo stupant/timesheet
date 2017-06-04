@@ -11,6 +11,7 @@ export class EntryService {
 
     private resourceUrl = 'api/entries';
     entities: Entry[] = [];
+    entity: Entry = new Entry();
 
     constructor(private http: Http, private dateUtils: DateUtils) { }
 

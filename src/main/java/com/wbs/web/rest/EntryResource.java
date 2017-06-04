@@ -91,8 +91,8 @@ public class EntryResource {
      */
     @GetMapping("/entries")
     @Timed
-    public ResponseEntity<List<Entry>> getAllEntries(@ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Entries");
+    public ResponseEntity<List<Entry>> getAllEntries(@ApiParam Pageable pageable, @ApiParam @RequestParam(name = "query", required = false) String query) {
+        log.debug("REST request to get a page of Entries with query " + query);
         Page<Entry> page = entryRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/entries");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

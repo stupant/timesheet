@@ -33,11 +33,15 @@
           <hr/>
 
           <hr/>
-          <button class="btn btn-default" (click)="addEntry()">
+          <button class="btn btn-default" (click)="addEntry(date(j))">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="timesheetApp.entry.home.createLabel">
             Create new Entry
             </span>
+          </button>
+          <button *ngFor="let e of entries[date(j)]" (click)="editEntry(e)" class="btn btn-info">
+            <span class="fa fa-clock-o"></span> {{e.hour}}
+            {{ e.notes }}
           </button>
         </div>
 
