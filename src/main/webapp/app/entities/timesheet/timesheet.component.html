@@ -24,25 +24,25 @@
         <small>{{ timesheet.getDate(timesheet.week, timesheet.year) }}</small>
     </h2>
     <jhi-alert></jhi-alert>
-    <hr/>
+    <hr/>row text-center
     <div class="timesheet-detail">
       <div class="row text-center">
         <div class="col" *ngFor="let i of dow; let j=index;">
           <h4 jhiTranslate="timesheetApp.timesheet.{{i}}">{{ i }}</h4>
           <small>{{ date(j) }}</small>
           <hr/>
-
-          <hr/>
-          <button class="btn btn-default" (click)="addEntry(date(j))">
-            <span class="fa fa-plus"></span>
-            <span  jhiTranslate="timesheetApp.entry.home.createLabel">
-            Create new Entry
-            </span>
-          </button>
-          <button *ngFor="let e of entries[date(j)]" (click)="editEntry(e)" class="btn btn-info">
-            <span class="fa fa-clock-o"></span> {{e.hour}}
-            {{ e.notes }}
-          </button>
+          <div class="list-group">
+            <button class="list-group-item list-group-item-action list-group-item-info" (click)="addEntry(date(j))">
+              <span class="fa fa-plus"></span>
+              <span  jhiTranslate="timesheetApp.entry.home.newLabel">
+              New Entry
+              </span>
+            </button>
+            <button *ngFor="let e of entries[date(j)]" (click)="editEntry(e)" class="list-group-item list-group-item-action" ngbTooltip="{{ e.notes }}">
+              {{ e.category }}
+              <span class="badge badge-default badge-pill"><i class="fa fa-clock-o"></i> {{ e.hour }}</span>
+            </button>
+          </div>
         </div>
 
       </div>

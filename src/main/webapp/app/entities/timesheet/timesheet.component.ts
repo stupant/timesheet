@@ -53,12 +53,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
 
     loadAll() {
         this.entries = {};
-        this.entry.query({
-            query: this.timesheet.year + ',' + this.timesheet.week,
-            page: this.page,
-            size: 10000,
-            sort: this.sort()
-        }).subscribe(
+        this.entry.lookup(this.timesheet.user, this.timesheet.year, this.timesheet.week).subscribe(
             (res: ResponseWrapper) => {
               this.entry.entities = res.json;
               res.json.forEach((i) => {
@@ -84,9 +79,10 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
     ngOnInit() {
-        this.loadAll();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
+            this.timesheet.user = this.currentAccount.email;
+            this.loadAll();
         });
         this.registerChangeInTimesheets();
     }
@@ -139,7 +135,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         this.modalRef = this.entryPopupService.openEntity(EntryDialogComponent);
     }
     editEntry(e: Entry) {
-        this.entry.entity = Object.assign({}, e);
+        this.entry.entity = Object.assign(new Entry(), e);
+        console.log('Entry to edit', this.entry.entity);
         this.modalRef = this.entryPopupService.openEntity(EntryDialogComponent);
     }
 }

@@ -9,10 +9,5 @@ export class Entry {
         public day?: any,
     ) {
         this.hour = 1;
-        this.day = this.getToday();
-    }
-
-    public getToday() {
-        return { year: this.today.getFullYear(), month: this.today.getMonth() + 1, day: this.today.getDate() };
     }
 }

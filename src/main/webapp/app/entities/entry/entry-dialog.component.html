@@ -70,7 +70,7 @@
             <label class="form-control-label" jhiTranslate="timesheetApp.entry.day" for="field_day">Day</label>
             <div class="input-group">
                 <input id="field_day" type="text" class="form-control" name="day" ngbDatepicker  #dayDp="ngbDatepicker" [(ngModel)]="entry.day"
-                required [maxDate]="entry.getToday()"/>
+                required [maxDate]="{ year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate() }"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="dayDp.toggle()"><i class="fa fa-calendar"></i></button>
                 </span>

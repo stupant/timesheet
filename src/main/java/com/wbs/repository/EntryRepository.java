@@ -8,8 +8,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 /**
  * Spring Data MongoDB repository for the Entry entity.
  */
-@SuppressWarnings("unused")
 @Repository
-public interface EntryRepository extends MongoRepository<Entry,String> {
+public interface EntryRepository extends MongoRepository<Entry,String>, EntryCustomRepository {
+
+	
 
 }

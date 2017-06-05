@@ -10,6 +10,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class EntryService {
 
     private resourceUrl = 'api/entries';
+    private lookupResourceUrl = 'api/lookup-entries';
     entities: Entry[] = [];
     entity: Entry = new Entry();
 
@@ -44,6 +45,11 @@ export class EntryService {
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
         return this.http.get(this.resourceUrl, options)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
+    lookup(email, year, week): Observable<ResponseWrapper> {
+        return this.http.get(this.lookupResourceUrl + '/' + email + '/' + year + '/' + week)
             .map((res: Response) => this.convertResponse(res));
     }
 
