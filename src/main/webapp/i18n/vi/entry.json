@@ -1,0 +1,25 @@
+{
+    "timesheetApp": {
+        "entry" : {
+            "home": {
+                "title": "Entries",
+                "createLabel": "Thêm mới một Entry",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Entry"
+            },
+            "created": "Một Entry mới được tạo với định danh {{ param }}",
+            "updated": "Một Entry cập nhật với định danh {{ param }}",
+            "deleted": "Một Entry đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Entry {{ id }}?"
+            },
+            "detail": {
+                "title": "Entry"
+            },
+            "user": "User",
+            "hour": "Hour",
+            "notes": "Notes",
+            "category": "Category",
+            "day": "Day"
+        }
+    }
+}

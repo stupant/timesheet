@@ -1,0 +1,97 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myEntryLabel" jhiTranslate="timesheetApp.entry.home.createOrEditLabel">Create or edit a Entry</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!entry.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="entry.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="timesheetApp.entry.user" for="field_user">User</label>
+            <input type="text" class="form-control" name="user" id="field_user"
+                [(ngModel)]="entry.user"
+            required />
+            <div [hidden]="!(editForm.controls.user?.dirty && editForm.controls.user?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.user?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="timesheetApp.entry.hour" for="field_hour">Hour</label>
+            <input type="number" class="form-control" name="hour" id="field_hour"
+                [(ngModel)]="entry.hour"
+            required min="0" max="24" />
+            <div [hidden]="!(editForm.controls.hour?.dirty && editForm.controls.hour?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.hour?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.hour?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.hour?.errors?.max" jhiTranslate="entity.validation.max" translateValues="{ max: 24 }">
+                    This field cannot be more than 24.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.hour?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="timesheetApp.entry.category" for="field_category">Category</label>
+            <select class="form-control" name="category" id="field_category" [(ngModel)]="entry.category" required >
+              <option *ngFor="let c of category.entities" value="{{c.name}}">{{c.name}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.category?.dirty && editForm.controls.category?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.category?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="timesheetApp.entry.notes" for="field_notes">Notes</label>
+            <textarea class="form-control" name="notes" id="field_notes"
+                [(ngModel)]="entry.notes"  ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="timesheetApp.entry.day" for="field_day">Day</label>
+            <div class="input-group">
+                <input id="field_day" type="text" class="form-control" name="day" ngbDatepicker  #dayDp="ngbDatepicker" [(ngModel)]="entry.day"
+                required [maxDate]="{ year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate() }"/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="dayDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+            <div [hidden]="!(editForm.controls.day?.dirty && editForm.controls.day?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.day?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
+
+{{ entry | json }}

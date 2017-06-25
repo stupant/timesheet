@@ -1,0 +1,50 @@
+<div>
+    <div class="btn-group float-right">
+      <button class="btn btn-warning" (click)="prev()">
+        <span class="fa fa-caret-left"></span>
+        <span  jhiTranslate="timesheetApp.timesheet.home.previousLabel">
+          Previous Week
+        </span>
+      </button>
+      <button class="btn btn-primary" [routerLink]="['/', { outlets: { popup: ['timesheet-new'] } }]">
+        <span class="fa fa-plus"></span>
+        <span  jhiTranslate="timesheetApp.timesheet.home.currentLabel">
+          This Week
+        </span>
+      </button>
+      <button class="btn btn-success" (click)="next()">
+        <span class="fa fa-caret-right"></span>
+        <span  jhiTranslate="timesheetApp.timesheet.home.nextLabel">
+          Next Week
+        </span>
+      </button>
+    </div>
+    <h2>
+        <span jhiTranslate="timesheetApp.timesheet.home.title">Timesheets</span> {{ timesheet.year }} - {{ timesheet.week }}
+        <small>{{ timesheet.getDate(timesheet.week, timesheet.year) }}</small>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <hr/>row text-center
+    <div class="timesheet-detail">
+      <div class="row text-center">
+        <div class="col" *ngFor="let i of dow; let j=index;">
+          <h4 jhiTranslate="timesheetApp.timesheet.{{i}}">{{ i }}</h4>
+          <small>{{ date(j) }}</small>
+          <hr/>
+          <div class="list-group">
+            <button class="list-group-item list-group-item-action list-group-item-info" (click)="addEntry(date(j))">
+              <span class="fa fa-plus"></span>
+              <span  jhiTranslate="timesheetApp.entry.home.newLabel">
+              New Entry
+              </span>
+            </button>
+            <button *ngFor="let e of entries[date(j)]" (click)="editEntry(e)" class="list-group-item list-group-item-action" ngbTooltip="{{ e.notes }}">
+              {{ e.category }}
+              <span class="badge badge-default badge-pill"><i class="fa fa-clock-o"></i> {{ e.hour }}</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+</div>

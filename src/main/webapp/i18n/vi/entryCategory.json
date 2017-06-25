@@ -1,0 +1,21 @@
+{
+    "timesheetApp": {
+        "entryCategory" : {
+            "home": {
+                "title": "Entry Categories",
+                "createLabel": "Thêm mới một Entry Category",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Entry Category"
+            },
+            "created": "Một Entry Category mới được tạo với định danh {{ param }}",
+            "updated": "Một Entry Category cập nhật với định danh {{ param }}",
+            "deleted": "Một Entry Category đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Entry Category {{ id }}?"
+            },
+            "detail": {
+                "title": "Entry Category"
+            },
+            "name": "Name"
+        }
+    }
+}
