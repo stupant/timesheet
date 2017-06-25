@@ -123,6 +123,40 @@ Then run:
 
 For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
 
+## Using HEROKU
+
+~~~
+$ yo jhipster:heroku
+Heroku configuration is starting
+? Name to deploy as: tranquil-sierra-56426
+? On which region do you want to deploy ? us
+
+Using existing Git repository
+
+Heroku CLI deployment plugin already installed
+
+Creating Heroku application and setting up node environment
+heroku create tranquil-sierra-56426
+
+? The Heroku app "tranquil-sierra-56426" already exists! Use it anyways? Yes, I have access to it
+set git remote heroku to https://git.heroku.com/tranquil-sierra-56426.git
+
+Provisioning addons
+No new addons created
+
+Creating Heroku deployment files
+   create src/main/resources/config/bootstrap-heroku.yml
+   create src/main/resources/config/application-heroku.yml
+   create Procfile
+...
+Your app should now be live. To view it run
+	heroku open
+And you can view the logs with this command
+	heroku logs --tail
+After application modification, redeploy it with
+	jhipster heroku
+~~~
+
 ## Continuous Integration (optional)
 
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
