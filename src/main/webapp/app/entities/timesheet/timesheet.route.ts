@@ -25,7 +25,7 @@ export const timesheetRoute: Routes = [
         path: 'timesheet-admin',
         component: TimesheetAdminComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'timesheetApp.timesheet.home.admin'
         },
         canActivate: [UserRouteAccessService]

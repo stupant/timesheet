@@ -113,6 +113,20 @@ public class TimesheetResource {
     }
 
     /**
+     * GET  /timesheets/:id : get the "id" timesheet.
+     *
+     * @param id the id of the timesheet to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the timesheet, or with status 404 (Not Found)
+     */
+    @GetMapping("/timesheet-lookup/{user}/{year}/{week}")
+    @Timed
+    public ResponseEntity<Timesheet> getTimesheet(@PathVariable("user") String user, @PathVariable("year") int year, @PathVariable("week") int week) {
+        log.debug("REST request to get Timesheet : user {} year {} week {}", user, year, week);
+        Timesheet timesheet = timesheetRepository.findOneByUserAndYearAndWeek(user, year, week);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(timesheet));
+    }
+
+    /**
      * DELETE  /timesheets/:id : delete the "id" timesheet.
      *
      * @param id the id of the timesheet to delete

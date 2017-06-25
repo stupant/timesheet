@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 export class Timesheet {
     today = new Date();
+    dow = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     constructor(
         public id?: string,
         public user?: string,

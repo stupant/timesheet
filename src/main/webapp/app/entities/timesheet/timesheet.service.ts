@@ -10,6 +10,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class TimesheetService {
 
     private resourceUrl = 'api/timesheets';
+    private lookupUrl = 'api/timesheet-lookup';
 
     constructor(private http: Http, private dateUtils: DateUtils) { }
 
@@ -45,8 +46,8 @@ export class TimesheetService {
             .map((res: Response) => this.convertResponse(res));
     }
 
-    lookup(options?): Observable<ResponseWrapper> {
-        return this.http.get(this.resourceUrl, options)
+    lookup(email, year, week): Observable<ResponseWrapper> {
+        return this.http.get(this.lookupUrl + '/' + email + '/' + year + '/' + week)
             .map((res: Response) => this.convertResponse(res));
     }
 

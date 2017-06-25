@@ -28,9 +28,10 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     queryCount: any;
     reverse: any;
     totalItems: number;
+    totalHours: number;
     modalRef: NgbModalRef;
-    dow = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     entries: any = {};
+    isSaving = false;
 
     constructor(
         public timesheetService: TimesheetService,
@@ -53,18 +54,24 @@ export class TimesheetComponent implements OnInit, OnDestroy {
 
     loadAll() {
         this.entries = {};
+        this.timesheetService.lookup(this.timesheet.user, this.timesheet.year, this.timesheet.week).subscribe(
+          (ts: ResponseWrapper) => this.timesheet = Object.assign(this.timesheet, ts.json),
+          (err) => console.error(err)
+        );
         this.entry.lookup(this.timesheet.user, this.timesheet.year, this.timesheet.week).subscribe(
             (res: ResponseWrapper) => {
-              this.entry.entities = res.json;
-              res.json.forEach((i) => {
-                console.log(i);
-                const key = moment(i.day.toString()).format('YYYY-MM-DD');
-                if (!this.entries[key]) {
-                  this.entries[key] = [];
-                }
-                this.entries[key].push(i);
-              });
-              console.log(this.entries);
+                this.entry.entities = res.json;
+                this.totalHours = 0;
+                res.json.forEach((i) => {
+                    console.log(i);
+                    const key = moment(i.day.toString()).format('YYYY-MM-DD');
+                    if (!this.entries[key]) {
+                        this.entries[key] = [];
+                    }
+                    this.entries[key].push(i);
+                    this.totalHours += i.hour;
+                });
+                console.log(this.entries);
             }, (res: ResponseWrapper) => console.error(res.json)
         );
     }
@@ -123,7 +130,10 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         this.timesheet.hasDate(moment(this.timesheet.today.toString()).add(7, 'days').toDate());
         this.loadAll();
     }
-
+    cur() {
+        this.timesheet.hasDate(new Date());
+        this.loadAll();
+    }
     date(i: number) {
         return moment(this.timesheet.today.toString()).add(i, 'days').format('YYYY-MM-DD');
     }
@@ -136,7 +146,36 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
     editEntry(e: Entry) {
         this.entry.entity = Object.assign(new Entry(), e);
+        const date = moment(e.day);
+        this.entry.entity.day = { year: date.year(), month: date.month() + 1, day: date.date() };
         console.log('Entry to edit', this.entry.entity);
         this.modalRef = this.entryPopupService.openEntity(EntryDialogComponent);
+    }
+
+    save() {
+        this.isSaving = true;
+        this.timesheetService.update(this.timesheet).subscribe(
+            (result: Timesheet) => {
+                this.timesheet = result;
+                this.alertService.success('timesheetApp.timesheet.submited', { param: result.id }, null);
+                this.eventManager.broadcast({ name: 'timesheetListModification', content: 'OK' });
+                this.isSaving = false;
+            },
+            (err) => this.onSaveError(err)
+        );
+    }
+
+    private onSaveError(error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
+        }
+        this.isSaving = false;
+        this.onError(error);
+    }
+
+    private onError(error) {
+        this.alertService.error(error.message, null, null);
     }
 }

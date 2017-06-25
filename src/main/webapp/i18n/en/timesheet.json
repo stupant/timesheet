@@ -1,6 +1,10 @@
 {
     "timesheetApp": {
         "timesheet" : {
+          "action": {
+            "approve": "Approve",
+            "reject": "Reject"
+          },
             "home": {
                 "title": "Timesheets",
                 "admin": "Administration",
@@ -11,6 +15,7 @@
                 "createOrEditLabel": "Create or edit a Timesheet"
             },
             "created": "A new Timesheet is created with identifier {{ param }}",
+            "created": "A new Timesheet is submited for approval with identifier {{ param }}",
             "updated": "A Timesheet is updated with identifier {{ param }}",
             "deleted": "A Timesheet is deleted with identifier {{ param }}",
             "delete": {
