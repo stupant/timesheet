@@ -3,7 +3,6 @@ package com.wbs.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -12,12 +11,10 @@ import java.util.Objects;
 /**
  * A Timesheet.
  */
-
 @Document(collection = "timesheet")
 public class Timesheet implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Id
     private String id;
 
@@ -31,6 +28,8 @@ public class Timesheet implements Serializable {
     @Field("week")
     private Integer week;
 
+    @NotNull
+    @Max(value = 9999)
     @Field("year")
     private Integer year;
 
@@ -48,19 +47,11 @@ public class Timesheet implements Serializable {
 
     @Field("total_hours")
     private Integer totalHours;
-    
-    @Field("entries")
-    private Entry entries;
 
-    public Entry getEntries() {
-		return entries;
-	}
+    @Field("status")
+    private Integer status;
 
-	public void setEntries(Entry entries) {
-		this.entries = entries;
-	}
-
-	public String getId() {
+    public String getId() {
         return id;
     }
 
@@ -172,6 +163,19 @@ public class Timesheet implements Serializable {
         this.totalHours = totalHours;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public Timesheet status(Integer status) {
+        this.status = status;
+        return this;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -204,6 +208,7 @@ public class Timesheet implements Serializable {
             ", updatedBy='" + getUpdatedBy() + "'" +
             ", summary='" + getSummary() + "'" +
             ", totalHours='" + getTotalHours() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
     }
 }

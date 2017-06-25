@@ -4,7 +4,6 @@
             "home": {
                 "title": "Entries",
                 "createLabel": "Create a new Entry",
-                "newLabel": "New Entry",
                 "createOrEditLabel": "Create or edit a Entry"
             },
             "created": "A new Entry is created with identifier {{ param }}",

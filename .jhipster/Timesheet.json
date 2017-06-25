@@ -49,6 +49,10 @@
         {
             "fieldName": "totalHours",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "Integer"
         }
     ],
     "dto": "no",

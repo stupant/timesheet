@@ -10,8 +10,6 @@ export class EntryCategoryService {
 
     private resourceUrl = 'api/entry-categories';
 
-    entities: EntryCategory[] = [];
-
     constructor(private http: Http) { }
 
     create(entryCategory: EntryCategory): Observable<EntryCategory> {
@@ -28,7 +26,7 @@ export class EntryCategoryService {
         });
     }
 
-    find(id: number): Observable<EntryCategory> {
+    find(id: string): Observable<EntryCategory> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
             return res.json();
         });
@@ -40,7 +38,7 @@ export class EntryCategoryService {
             .map((res: Response) => this.convertResponse(res));
     }
 
-    delete(id: number): Observable<Response> {
+    delete(id: string): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 

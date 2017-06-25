@@ -1,20 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { EventManager, ParseLinks, PaginationUtil, JhiLanguageService, AlertService, DataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
-import { Timesheet } from './timesheet.model';
-import { TimesheetService } from './timesheet.service';
+import { Feedback } from './feedback.model';
+import { FeedbackService } from './feedback.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 
 @Component({
-    selector: 'jhi-timesheet',
-    templateUrl: './timesheet-admin.component.html'
+    selector: 'jhi-feedback',
+    templateUrl: './feedback.component.html'
 })
-export class TimesheetAdminComponent implements OnInit, OnDestroy {
+export class FeedbackComponent implements OnInit, OnDestroy {
 
-    timesheets: Timesheet[];
+    feedbacks: Feedback[];
     currentAccount: any;
     eventSubscriber: Subscription;
     itemsPerPage: number;
@@ -26,14 +26,14 @@ export class TimesheetAdminComponent implements OnInit, OnDestroy {
     totalItems: number;
 
     constructor(
-        private timesheetService: TimesheetService,
-        private alertService: AlertService,
-        private dataUtils: DataUtils,
-        private eventManager: EventManager,
-        private parseLinks: ParseLinks,
+        private feedbackService: FeedbackService,
+        private alertService: JhiAlertService,
+        private dataUtils: JhiDataUtils,
+        private eventManager: JhiEventManager,
+        private parseLinks: JhiParseLinks,
         private principal: Principal
     ) {
-        this.timesheets = [];
+        this.feedbacks = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.page = 0;
         this.links = {
@@ -44,19 +44,19 @@ export class TimesheetAdminComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
-        this.timesheetService.query({
+        this.feedbackService.query({
             page: this.page,
             size: this.itemsPerPage,
             sort: this.sort()
         }).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
-            );
+        );
     }
 
     reset() {
         this.page = 0;
-        this.timesheets = [];
+        this.feedbacks = [];
         this.loadAll();
     }
 
@@ -69,14 +69,14 @@ export class TimesheetAdminComponent implements OnInit, OnDestroy {
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
-        this.registerChangeInTimesheets();
+        this.registerChangeInFeedbacks();
     }
 
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: Timesheet) {
+    trackId(index: number, item: Feedback) {
         return item.id;
     }
 
@@ -87,8 +87,8 @@ export class TimesheetAdminComponent implements OnInit, OnDestroy {
     openFile(contentType, field) {
         return this.dataUtils.openFile(contentType, field);
     }
-    registerChangeInTimesheets() {
-        this.eventSubscriber = this.eventManager.subscribe('timesheetListModification', (response) => this.reset());
+    registerChangeInFeedbacks() {
+        this.eventSubscriber = this.eventManager.subscribe('feedbackListModification', (response) => this.reset());
     }
 
     sort() {
@@ -103,7 +103,7 @@ export class TimesheetAdminComponent implements OnInit, OnDestroy {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
         for (let i = 0; i < data.length; i++) {
-            this.timesheets.push(data[i]);
+            this.feedbacks.push(data[i]);
         }
     }
 

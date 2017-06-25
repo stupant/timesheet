@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AlertService, EventManager } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
 import { Timesheet } from './timesheet.model';
 import { TimesheetPopupService } from './timesheet-popup.service';
@@ -19,8 +19,8 @@ export class TimesheetDeleteDialogComponent {
     constructor(
         private timesheetService: TimesheetService,
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
-        private eventManager: EventManager
+        private alertService: JhiAlertService,
+        private eventManager: JhiEventManager
     ) {
     }
 
@@ -28,7 +28,7 @@ export class TimesheetDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id: number) {
+    confirmDelete(id: string) {
         this.timesheetService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'timesheetListModification',

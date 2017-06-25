@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { DateUtils } from 'ng-jhipster';
+import { JhiDateUtils } from 'ng-jhipster';
 
 import { Entry } from './entry.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
@@ -10,11 +10,8 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class EntryService {
 
     private resourceUrl = 'api/entries';
-    private lookupResourceUrl = 'api/lookup-entries';
-    entities: Entry[] = [];
-    entity: Entry = new Entry();
 
-    constructor(private http: Http, private dateUtils: DateUtils) { }
+    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
 
     create(entry: Entry): Observable<Entry> {
         const copy = this.convert(entry);
@@ -34,7 +31,7 @@ export class EntryService {
         });
     }
 
-    find(id: number): Observable<Entry> {
+    find(id: string): Observable<Entry> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
             const jsonResponse = res.json();
             this.convertItemFromServer(jsonResponse);
@@ -48,12 +45,7 @@ export class EntryService {
             .map((res: Response) => this.convertResponse(res));
     }
 
-    lookup(email, year, week): Observable<ResponseWrapper> {
-        return this.http.get(this.lookupResourceUrl + '/' + email + '/' + year + '/' + week)
-            .map((res: Response) => this.convertResponse(res));
-    }
-
-    delete(id: number): Observable<Response> {
+    delete(id: string): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 

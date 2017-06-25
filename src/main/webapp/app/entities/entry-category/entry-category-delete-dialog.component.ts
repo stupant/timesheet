@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AlertService, EventManager } from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
 import { EntryCategory } from './entry-category.model';
 import { EntryCategoryPopupService } from './entry-category-popup.service';
@@ -19,8 +19,8 @@ export class EntryCategoryDeleteDialogComponent {
     constructor(
         private entryCategoryService: EntryCategoryService,
         public activeModal: NgbActiveModal,
-        private alertService: AlertService,
-        private eventManager: EventManager
+        private alertService: JhiAlertService,
+        private eventManager: JhiEventManager
     ) {
     }
 
@@ -28,7 +28,7 @@ export class EntryCategoryDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id: number) {
+    confirmDelete(id: string) {
         this.entryCategoryService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'entryCategoryListModification',

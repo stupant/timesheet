@@ -1,6 +1,6 @@
-import * as moment from 'moment';
-export class Timesheet {
-    today = new Date();
+import { BaseEntity } from './../../shared';
+
+export class Timesheet implements BaseEntity {
     constructor(
         public id?: string,
         public user?: string,
@@ -11,23 +11,7 @@ export class Timesheet {
         public updatedBy?: string,
         public summary?: any,
         public totalHours?: number,
+        public status?: number,
     ) {
-        this.hasDate(new Date());
-    }
-    hasDate(d: Date) {
-        this.today = d;
-        this.year = d.getFullYear();
-        this.week = moment(d.toString()).week();
-    }
-    setDateByWeek(w: number, y: number) {
-        this.today = this.getDate(w, y);
-        this.week = w;
-        this.year = y;
-    }
-    getDate(w: number, y: number): Date {
-        return moment().week(w).year(y).toDate();
-    }
-    getWeekNumber(d: Date): number {
-        return moment(d.toString).week();
     }
 }

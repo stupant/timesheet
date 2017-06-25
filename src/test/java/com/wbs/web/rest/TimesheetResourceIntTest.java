@@ -47,8 +47,8 @@ public class TimesheetResourceIntTest {
     private static final Integer DEFAULT_WEEK = 0;
     private static final Integer UPDATED_WEEK = 1;
 
-    private static final Integer DEFAULT_YEAR = 1;
-    private static final Integer UPDATED_YEAR = 2;
+    private static final Integer DEFAULT_YEAR = 9999;
+    private static final Integer UPDATED_YEAR = 9998;
 
     private static final ZonedDateTime DEFAULT_SUBMIT_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_SUBMIT_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -64,6 +64,9 @@ public class TimesheetResourceIntTest {
 
     private static final Integer DEFAULT_TOTAL_HOURS = 1;
     private static final Integer UPDATED_TOTAL_HOURS = 2;
+
+    private static final Integer DEFAULT_STATUS = 1;
+    private static final Integer UPDATED_STATUS = 2;
 
     @Autowired
     private TimesheetRepository timesheetRepository;
@@ -106,7 +109,8 @@ public class TimesheetResourceIntTest {
             .updatedAt(DEFAULT_UPDATED_AT)
             .updatedBy(DEFAULT_UPDATED_BY)
             .summary(DEFAULT_SUMMARY)
-            .totalHours(DEFAULT_TOTAL_HOURS);
+            .totalHours(DEFAULT_TOTAL_HOURS)
+            .status(DEFAULT_STATUS);
         return timesheet;
     }
 
@@ -138,6 +142,7 @@ public class TimesheetResourceIntTest {
         assertThat(testTimesheet.getUpdatedBy()).isEqualTo(DEFAULT_UPDATED_BY);
         assertThat(testTimesheet.getSummary()).isEqualTo(DEFAULT_SUMMARY);
         assertThat(testTimesheet.getTotalHours()).isEqualTo(DEFAULT_TOTAL_HOURS);
+        assertThat(testTimesheet.getStatus()).isEqualTo(DEFAULT_STATUS);
     }
 
     @Test
@@ -193,6 +198,23 @@ public class TimesheetResourceIntTest {
     }
 
     @Test
+    public void checkYearIsRequired() throws Exception {
+        int databaseSizeBeforeTest = timesheetRepository.findAll().size();
+        // set the field null
+        timesheet.setYear(null);
+
+        // Create the Timesheet, which fails.
+
+        restTimesheetMockMvc.perform(post("/api/timesheets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(timesheet)))
+            .andExpect(status().isBadRequest());
+
+        List<Timesheet> timesheetList = timesheetRepository.findAll();
+        assertThat(timesheetList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
     public void getAllTimesheets() throws Exception {
         // Initialize the database
         timesheetRepository.save(timesheet);
@@ -209,7 +231,8 @@ public class TimesheetResourceIntTest {
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))))
             .andExpect(jsonPath("$.[*].updatedBy").value(hasItem(DEFAULT_UPDATED_BY.toString())))
             .andExpect(jsonPath("$.[*].summary").value(hasItem(DEFAULT_SUMMARY.toString())))
-            .andExpect(jsonPath("$.[*].totalHours").value(hasItem(DEFAULT_TOTAL_HOURS)));
+            .andExpect(jsonPath("$.[*].totalHours").value(hasItem(DEFAULT_TOTAL_HOURS)))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)));
     }
 
     @Test
@@ -229,7 +252,8 @@ public class TimesheetResourceIntTest {
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)))
             .andExpect(jsonPath("$.updatedBy").value(DEFAULT_UPDATED_BY.toString()))
             .andExpect(jsonPath("$.summary").value(DEFAULT_SUMMARY.toString()))
-            .andExpect(jsonPath("$.totalHours").value(DEFAULT_TOTAL_HOURS));
+            .andExpect(jsonPath("$.totalHours").value(DEFAULT_TOTAL_HOURS))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS));
     }
 
     @Test
@@ -255,7 +279,8 @@ public class TimesheetResourceIntTest {
             .updatedAt(UPDATED_UPDATED_AT)
             .updatedBy(UPDATED_UPDATED_BY)
             .summary(UPDATED_SUMMARY)
-            .totalHours(UPDATED_TOTAL_HOURS);
+            .totalHours(UPDATED_TOTAL_HOURS)
+            .status(UPDATED_STATUS);
 
         restTimesheetMockMvc.perform(put("/api/timesheets")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -274,6 +299,7 @@ public class TimesheetResourceIntTest {
         assertThat(testTimesheet.getUpdatedBy()).isEqualTo(UPDATED_UPDATED_BY);
         assertThat(testTimesheet.getSummary()).isEqualTo(UPDATED_SUMMARY);
         assertThat(testTimesheet.getTotalHours()).isEqualTo(UPDATED_TOTAL_HOURS);
+        assertThat(testTimesheet.getStatus()).isEqualTo(UPDATED_STATUS);
     }
 
     @Test

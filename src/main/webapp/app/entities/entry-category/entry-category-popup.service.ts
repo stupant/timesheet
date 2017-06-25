@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EntryCategory } from './entry-category.model';
 import { EntryCategoryService } from './entry-category.service';
+
 @Injectable()
 export class EntryCategoryPopupService {
     private isOpen = false;

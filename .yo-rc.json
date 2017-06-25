@@ -4,7 +4,7 @@
       "packageName": "com.wbs",
       "nativeLanguage": "en"
     },
-    "jhipsterVersion": "4.5.2",
+    "jhipsterVersion": "4.5.6",
     "baseName": "timesheet",
     "packageName": "com.wbs",
     "packageFolder": "com/wbs",
@@ -34,6 +34,7 @@
       "en",
       "ko",
       "vi"
-    ]
+    ],
+    "herokuAppName": "tranquil-sierra-56426"
   }
 }

@@ -3,7 +3,7 @@ import { OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-import { DateUtils, DataUtils, EventManager } from 'ng-jhipster';
+import { JhiDateUtils, JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { TimesheetTestModule } from '../../../test.module';
 import { MockActivatedRoute } from '../../../helpers/mock-route.service';
 import { EntryDetailComponent } from '../../../../../../main/webapp/app/entities/entry/entry-detail.component';
@@ -22,15 +22,15 @@ describe('Component Tests', () => {
                 imports: [TimesheetTestModule],
                 declarations: [EntryDetailComponent],
                 providers: [
-                    DateUtils,
-                    DataUtils,
+                    JhiDateUtils,
+                    JhiDataUtils,
                     DatePipe,
                     {
                         provide: ActivatedRoute,
                         useValue: new MockActivatedRoute({id: 123})
                     },
                     EntryService,
-                    EventManager
+                    JhiEventManager
                 ]
             }).overrideTemplate(EntryDetailComponent, '')
             .compileComponents();

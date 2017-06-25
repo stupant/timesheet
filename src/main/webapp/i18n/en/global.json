@@ -7,10 +7,10 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
+                "feedback": "Feedback",
                 "entryCategory": "Entry Category",
+                "entry": "Entry",
                 "timesheet": "Timesheet",
-                "timesheetAdmin": "Timesheet Approval",
-                "entry": "Entries",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

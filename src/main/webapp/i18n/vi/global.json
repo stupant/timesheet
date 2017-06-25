@@ -7,10 +7,10 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Thực thể",
-                "entryCategory": "Danh mục Công việc",
-                "timesheet": "Bảng chấm công",
-                "timesheetApproval": "Duyệt Bảng chấm công",
-                "entry": "Mục",
+                "feedback": "Feedback",
+                "entryCategory": "Entry Category",
+                "entry": "Entry",
+                "timesheet": "Timesheet",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

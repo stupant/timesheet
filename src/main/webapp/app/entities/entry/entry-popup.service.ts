@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Entry } from './entry.model';
 import { EntryService } from './entry.service';
+
 @Injectable()
 export class EntryPopupService {
     private isOpen = false;
@@ -33,14 +34,6 @@ export class EntryPopupService {
         } else {
             return this.entryModalRef(component, new Entry());
         }
-    }
-
-    openEntity(component: Component): NgbModalRef {
-        if (this.isOpen) {
-            return;
-        }
-        this.isOpen = true;
-        return this.entryModalRef(component, this.entryService.entity);
     }
 
     entryModalRef(component: Component, entry: Entry): NgbModalRef {

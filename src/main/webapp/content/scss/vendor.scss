@@ -1,15 +1,10 @@
 /* after changing this file run 'yarn run webpack:build:vendor' or 'yarn install' or 'yarn run webpack:build' */
 $fa-font-path: '~font-awesome/fonts';
+
 /***************************
 put Sass variables here:
 eg $input-color: red;
 ****************************/
+
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'node_modules/font-awesome/scss/font-awesome';
-
-.timesheet-detail .row > .col {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    border: 1px solid rgba(86,61,124,.2);
-    min-height: 400px;
-}

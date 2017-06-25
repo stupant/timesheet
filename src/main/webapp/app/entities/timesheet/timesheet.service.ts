@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { DateUtils } from 'ng-jhipster';
+import { JhiDateUtils } from 'ng-jhipster';
 
 import { Timesheet } from './timesheet.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
@@ -11,7 +11,7 @@ export class TimesheetService {
 
     private resourceUrl = 'api/timesheets';
 
-    constructor(private http: Http, private dateUtils: DateUtils) { }
+    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
 
     create(timesheet: Timesheet): Observable<Timesheet> {
         const copy = this.convert(timesheet);
@@ -31,7 +31,7 @@ export class TimesheetService {
         });
     }
 
-    find(id: number): Observable<Timesheet> {
+    find(id: string): Observable<Timesheet> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
             const jsonResponse = res.json();
             this.convertItemFromServer(jsonResponse);
@@ -45,12 +45,7 @@ export class TimesheetService {
             .map((res: Response) => this.convertResponse(res));
     }
 
-    lookup(options?): Observable<ResponseWrapper> {
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
-    }
-
-    delete(id: number): Observable<Response> {
+    delete(id: string): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 

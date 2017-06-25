@@ -67,7 +67,7 @@ public class TimesheetResource {
      * @param timesheet the timesheet to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated timesheet,
      * or with status 400 (Bad Request) if the timesheet is not valid,
-     * or with status 500 (Internal Server Error) if the timesheet couldnt be updated
+     * or with status 500 (Internal Server Error) if the timesheet couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/timesheets")

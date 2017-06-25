@@ -4,14 +4,11 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService, DataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { Entry } from './entry.model';
 import { EntryPopupService } from './entry-popup.service';
 import { EntryService } from './entry.service';
-
-import { EntryCategoryService } from '../entry-category';
-import { ResponseWrapper, Principal, AccountService } from '../../shared';
 
 @Component({
     selector: 'jhi-entry-dialog',
@@ -23,28 +20,21 @@ export class EntryDialogComponent implements OnInit {
     authorities: any[];
     isSaving: boolean;
     dayDp: any;
-    today = new Date();
 
     constructor(
-        public entryService: EntryService,
-        public category: EntryCategoryService,
         public activeModal: NgbActiveModal,
-        private dataUtils: DataUtils,
-        private alertService: AlertService,
-        private eventManager: EventManager,
-        private account: AccountService,
-        private principal: Principal,
+        private dataUtils: JhiDataUtils,
+        private alertService: JhiAlertService,
+        private entryService: EntryService,
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.category.query({ size: 1000 }).subscribe((res: ResponseWrapper) => this.category.entities = res.json, (err) => this.alertService.error(err));
-        this.principal.identity().then((account) => {
-            this.entry.user = account.email;
-        });
     }
+
     byteSize(field) {
         return this.dataUtils.byteSize(field);
     }
@@ -54,7 +44,7 @@ export class EntryDialogComponent implements OnInit {
     }
 
     setFileData(event, entry, field, isImage) {
-        if (event.target.files && event.target.files[0]) {
+        if (event && event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
             if (isImage && !/^image\//.test(file.type)) {
                 return;
@@ -65,6 +55,7 @@ export class EntryDialogComponent implements OnInit {
             });
         }
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -88,10 +79,10 @@ export class EntryDialogComponent implements OnInit {
     private onSaveSuccess(result: Entry, isCreated: boolean) {
         this.alertService.success(
             isCreated ? 'timesheetApp.entry.created'
-                : 'timesheetApp.entry.updated',
-            { param: result.id }, null);
+            : 'timesheetApp.entry.updated',
+            { param : result.id }, null);
 
-        this.eventManager.broadcast({ name: 'entryListModification', content: 'OK' });
+        this.eventManager.broadcast({ name: 'entryListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -123,11 +114,11 @@ export class EntryPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private entryPopupService: EntryPopupService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            if (params['id']) {
+            if ( params['id'] ) {
                 this.modalRef = this.entryPopupService
                     .open(EntryDialogComponent, params['id']);
             } else {

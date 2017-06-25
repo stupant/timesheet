@@ -11,5 +11,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 @SuppressWarnings("unused")
 @Repository
 public interface TimesheetRepository extends MongoRepository<Timesheet,String> {
-
+    
 }

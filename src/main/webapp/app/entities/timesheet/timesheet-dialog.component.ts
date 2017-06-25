@@ -4,15 +4,11 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, AlertService, DataUtils } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { Timesheet } from './timesheet.model';
 import { TimesheetPopupService } from './timesheet-popup.service';
 import { TimesheetService } from './timesheet.service';
-
-import { Entry, EntryService } from '../entry';
-
-import { ResponseWrapper, Principal, AccountService } from '../../shared';
 
 @Component({
     selector: 'jhi-timesheet-dialog',
@@ -25,24 +21,19 @@ export class TimesheetDialogComponent implements OnInit {
     isSaving: boolean;
 
     constructor(
-        public timesheetService: TimesheetService,
-        public entry: EntryService,
         public activeModal: NgbActiveModal,
-        private dataUtils: DataUtils,
-        private alertService: AlertService,
-        private eventManager: EventManager,
-        private account: AccountService,
-        private principal: Principal,
+        private dataUtils: JhiDataUtils,
+        private alertService: JhiAlertService,
+        private timesheetService: TimesheetService,
+        private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.principal.identity().then((account) => {
-            this.timesheet.user = account.email;
-        });
     }
+
     byteSize(field) {
         return this.dataUtils.byteSize(field);
     }
@@ -52,7 +43,7 @@ export class TimesheetDialogComponent implements OnInit {
     }
 
     setFileData(event, timesheet, field, isImage) {
-        if (event.target.files && event.target.files[0]) {
+        if (event && event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
             if (isImage && !/^image\//.test(file.type)) {
                 return;
@@ -63,6 +54,7 @@ export class TimesheetDialogComponent implements OnInit {
             });
         }
     }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }

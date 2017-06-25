@@ -8,4 +8,6 @@ if (module['hot']) {
     module['hot'].accept();
 }
 
-platformBrowserDynamic().bootstrapModule(TimesheetAppModule);
+platformBrowserDynamic().bootstrapModule(TimesheetAppModule)
+.then((success) => console.log(`Application started`))
+.catch((err) => console.error(err));

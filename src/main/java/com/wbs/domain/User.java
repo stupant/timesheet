@@ -21,6 +21,7 @@ import java.time.Instant;
 /**
  * A user.
  */
+
 @Document(collection = "jhi_user")
 public class User extends AbstractAuditingEntity implements Serializable {
 
@@ -72,7 +73,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Field("reset_key")
     @JsonIgnore
     private String resetKey;
-
 
     @Field("reset_date")
     private Instant resetDate = null;

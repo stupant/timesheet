@@ -1,5 +1,6 @@
-export class Entry {
-    public today = new Date();
+import { BaseEntity } from './../../shared';
+
+export class Entry implements BaseEntity {
     constructor(
         public id?: string,
         public user?: string,
@@ -8,6 +9,5 @@ export class Entry {
         public category?: string,
         public day?: any,
     ) {
-        this.hour = 1;
     }
 }
