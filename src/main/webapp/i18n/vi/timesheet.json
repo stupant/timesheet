@@ -23,7 +23,13 @@
             "updatedBy": "Updated By",
             "summary": "Summary",
             "totalHours": "Total Hours",
-            "status": "Status"
+            "mon": "Monday",
+            "tue": "Tuesday",
+            "wed": "Wednesday",
+            "thu": "Thursday",
+            "fri": "Friday",
+            "sat": "Saturday",
+            "sun": "Sunday"
         }
     }
 }

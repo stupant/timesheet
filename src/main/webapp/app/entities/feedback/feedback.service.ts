@@ -11,7 +11,13 @@ export class FeedbackService {
 
     private resourceUrl = 'api/feedbacks';
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
+    entity: Feedback;
+    entities: Feedback[];
+
+    constructor(private http: Http, private dateUtils: JhiDateUtils) {
+      this.entity = new Feedback();
+      this.entities = [];
+    }
 
     create(feedback: Feedback): Observable<Feedback> {
         const copy = this.convert(feedback);

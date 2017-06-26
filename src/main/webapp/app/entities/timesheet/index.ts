@@ -6,3 +6,4 @@ export * from './timesheet-delete-dialog.component';
 export * from './timesheet-detail.component';
 export * from './timesheet.component';
 export * from './timesheet.route';
+export * from './timesheet-admin.component';

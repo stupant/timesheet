@@ -67,7 +67,7 @@ public class TimesheetResource {
      * @param timesheet the timesheet to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated timesheet,
      * or with status 400 (Bad Request) if the timesheet is not valid,
-     * or with status 500 (Internal Server Error) if the timesheet couldn't be updated
+     * or with status 500 (Internal Server Error) if the timesheet couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/timesheets")
@@ -109,6 +109,20 @@ public class TimesheetResource {
     public ResponseEntity<Timesheet> getTimesheet(@PathVariable String id) {
         log.debug("REST request to get Timesheet : {}", id);
         Timesheet timesheet = timesheetRepository.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(timesheet));
+    }
+
+    /**
+     * GET  /timesheets/:id : get the "id" timesheet.
+     *
+     * @param id the id of the timesheet to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the timesheet, or with status 404 (Not Found)
+     */
+    @GetMapping("/timesheet-lookup/{user}/{year}/{week}")
+    @Timed
+    public ResponseEntity<Timesheet> getTimesheet(@PathVariable("user") String user, @PathVariable("year") int year, @PathVariable("week") int week) {
+        log.debug("REST request to get Timesheet : user {} year {} week {}", user, year, week);
+        Timesheet timesheet = timesheetRepository.findOneByUserAndYearAndWeek(user, year, week);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(timesheet));
     }
 

@@ -1,6 +1,4 @@
-import { BaseEntity } from './../../shared';
-
-export class EntryCategory implements BaseEntity {
+export class EntryCategory {
     constructor(
         public id?: string,
         public name?: string,

@@ -10,6 +10,9 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class EntryService {
 
     private resourceUrl = 'api/entries';
+    private lookupResourceUrl = 'api/lookup-entries';
+    entities: Entry[] = [];
+    entity: Entry = new Entry();
 
     constructor(private http: Http, private dateUtils: JhiDateUtils) { }
 
@@ -31,7 +34,7 @@ export class EntryService {
         });
     }
 
-    find(id: string): Observable<Entry> {
+    find(id: number): Observable<Entry> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
             const jsonResponse = res.json();
             this.convertItemFromServer(jsonResponse);
@@ -45,7 +48,12 @@ export class EntryService {
             .map((res: Response) => this.convertResponse(res));
     }
 
-    delete(id: string): Observable<Response> {
+    lookup(email, year, week): Observable<ResponseWrapper> {
+        return this.http.get(this.lookupResourceUrl + '/' + email + '/' + year + '/' + week)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
+    delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 

@@ -29,27 +29,33 @@
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
                     <li>
-                        <a class="dropdown-item" routerLink="feedback" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.feedback">Feedback</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="entry-category" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <a class="dropdown-item" routerLink="entry-category" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-hashtag" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.entryCategory">Entry Category</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="entry" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.entry">Entry</span>
+                        <a class="dropdown-item" routerLink="timesheet-admin" routerLinkActive="active" (click)="collapseNavbar()" *jhiHasAnyAuthority="'ROLE_ADMIN'" >
+                            <i class="fa fa-fw fa-calendar-check-o" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.timesheetAdmin">Timesheet Administration</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="timesheet" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <a class="dropdown-item" routerLink="timesheet" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.timesheet">Timesheet</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="entry" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.entry">Entries</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="feedback" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.feedback">Feedback</span>
                         </a>
                     </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->

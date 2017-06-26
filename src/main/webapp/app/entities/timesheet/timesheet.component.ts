@@ -7,6 +7,10 @@ import { Timesheet } from './timesheet.model';
 import { TimesheetService } from './timesheet.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
+import { Entry, EntryService, EntryPopupService, EntryDialogComponent } from '../entry';
+import * as moment from 'moment';
 
 @Component({
     selector: 'jhi-timesheet',
@@ -14,7 +18,7 @@ import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 })
 export class TimesheetComponent implements OnInit, OnDestroy {
 
-    timesheets: Timesheet[];
+    timesheet: Timesheet = new Timesheet();
     currentAccount: any;
     eventSubscriber: Subscription;
     itemsPerPage: number;
@@ -24,16 +28,21 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     queryCount: any;
     reverse: any;
     totalItems: number;
+    totalHours: number;
+    modalRef: NgbModalRef;
+    entries: any = {};
+    isSaving = false;
 
     constructor(
-        private timesheetService: TimesheetService,
+        public timesheetService: TimesheetService,
+        public entry: EntryService,
+        private entryPopupService: EntryPopupService,
         private alertService: JhiAlertService,
         private dataUtils: JhiDataUtils,
         private eventManager: JhiEventManager,
         private parseLinks: JhiParseLinks,
-        private principal: Principal
+        private principal: Principal,
     ) {
-        this.timesheets = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.page = 0;
         this.links = {
@@ -44,19 +53,31 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
-        this.timesheetService.query({
-            page: this.page,
-            size: this.itemsPerPage,
-            sort: this.sort()
-        }).subscribe(
-            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json)
+        this.entries = {};
+        this.timesheetService.lookup(this.timesheet.user, this.timesheet.year, this.timesheet.week).subscribe(
+            (ts: ResponseWrapper) => this.timesheet = Object.assign(this.timesheet, ts.json),
+            (err) => console.error(err)
+        );
+        this.entry.lookup(this.timesheet.user, this.timesheet.year, this.timesheet.week).subscribe(
+            (res: ResponseWrapper) => {
+                this.entry.entities = res.json;
+                this.totalHours = 0;
+                res.json.forEach((i) => {
+                    console.log(i);
+                    const key = moment(i.day.toString()).format('YYYY-MM-DD');
+                    if (!this.entries[key]) {
+                        this.entries[key] = [];
+                    }
+                    this.entries[key].push(i);
+                    this.totalHours += i.hour;
+                });
+                console.log(this.entries);
+            }, (res: ResponseWrapper) => console.error(res.json)
         );
     }
 
     reset() {
         this.page = 0;
-        this.timesheets = [];
         this.loadAll();
     }
 
@@ -65,9 +86,10 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         this.loadAll();
     }
     ngOnInit() {
-        this.loadAll();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
+            this.timesheet.user = this.currentAccount.email;
+            this.loadAll();
         });
         this.registerChangeInTimesheets();
     }
@@ -89,6 +111,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
     registerChangeInTimesheets() {
         this.eventSubscriber = this.eventManager.subscribe('timesheetListModification', (response) => this.reset());
+        this.eventSubscriber = this.eventManager.subscribe('entryListModification', (response) => this.reset());
     }
 
     sort() {
@@ -99,15 +122,67 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         return result;
     }
 
-    private onSuccess(data, headers) {
-        this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = headers.get('X-Total-Count');
-        for (let i = 0; i < data.length; i++) {
-            this.timesheets.push(data[i]);
+    prev() {
+        this.timesheet.hasDate(moment(this.timesheet.today.toString()).subtract(7, 'days').toDate());
+        this.loadAll();
+    }
+    next() {
+        this.timesheet.hasDate(moment(this.timesheet.today.toString()).add(7, 'days').toDate());
+        this.loadAll();
+    }
+    cur() {
+        this.timesheet.hasDate(new Date());
+        this.loadAll();
+    }
+    date(i: number) {
+        return moment().week(this.timesheet.week).year(this.timesheet.year).day(i).format('YYYY-MM-DD');
+    }
+
+    addEntry(d: string) {
+        this.entry.entity = new Entry();
+        const date = moment(d);
+        this.entry.entity.day = { year: date.year(), month: date.month() + 1, day: date.date() };
+        this.modalRef = this.entryPopupService.openEntity(EntryDialogComponent);
+    }
+    editEntry(e: Entry) {
+        this.entry.entity = Object.assign(new Entry(), e);
+        const date = moment(e.day);
+        this.entry.entity.day = { year: date.year(), month: date.month() + 1, day: date.date() };
+        console.log('Entry to edit', this.entry.entity);
+        this.modalRef = this.entryPopupService.openEntity(EntryDialogComponent);
+    }
+
+    save() {
+        this.isSaving = true;
+        this.timesheet.totalHours = this.totalHours;
+        this.timesheet.status = 0; // Submit for Approval
+        this.timesheetService.update(this.timesheet).subscribe(
+            (result: Timesheet) => {
+                console.log('Timesheet return from server', result);
+                this.timesheet = Object.assign(new Timesheet(), result);
+                this.alertService.success('timesheetApp.timesheet.submited', { param: result.id }, null);
+                this.eventManager.broadcast({ name: 'timesheetListModification', content: 'OK' });
+                this.isSaving = false;
+            },
+            (err) => this.onSaveError(err)
+        );
+    }
+
+    private onSaveError(error) {
+        try {
+            error.json();
+        } catch (exception) {
+            error.message = error.text();
         }
+        this.isSaving = false;
+        this.onError(error);
     }
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
+    }
+
+    checkDate(i: string): boolean {
+      return i > (new Date()).toISOString();
     }
 }

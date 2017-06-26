@@ -3,6 +3,7 @@ package com.wbs.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -11,10 +12,12 @@ import java.util.Objects;
 /**
  * A Entry.
  */
+
 @Document(collection = "entry")
 public class Entry implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     private String id;
 

@@ -28,7 +28,7 @@ export class EntryCategoryDeleteDialogComponent {
         this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete(id: string) {
+    confirmDelete(id: number) {
         this.entryCategoryService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'entryCategoryListModification',

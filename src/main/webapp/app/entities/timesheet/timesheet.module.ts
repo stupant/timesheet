@@ -13,6 +13,7 @@ import {
     TimesheetDeleteDialogComponent,
     timesheetRoute,
     timesheetPopupRoute,
+    TimesheetAdminComponent,
 } from './';
 
 const ENTITY_STATES = [
@@ -32,9 +33,11 @@ const ENTITY_STATES = [
         TimesheetDeleteDialogComponent,
         TimesheetPopupComponent,
         TimesheetDeletePopupComponent,
+        TimesheetAdminComponent,
     ],
     entryComponents: [
         TimesheetComponent,
+        TimesheetAdminComponent,
         TimesheetDialogComponent,
         TimesheetPopupComponent,
         TimesheetDeleteDialogComponent,

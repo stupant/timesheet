@@ -15,7 +15,8 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="timesheetApp.timesheet.user" for="field_user">User</label>
             <input type="text" class="form-control" name="user" id="field_user"
-                [(ngModel)]="timesheet.user" required />
+                [(ngModel)]="timesheet.user"
+            required />
             <div [hidden]="!(editForm.controls.user?.dirty && editForm.controls.user?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.user?.errors?.required" jhiTranslate="entity.validation.required">
@@ -26,7 +27,8 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="timesheetApp.timesheet.week" for="field_week">Week</label>
             <input type="number" class="form-control" name="week" id="field_week"
-                [(ngModel)]="timesheet.week" required min="0" max="53" />
+                [(ngModel)]="timesheet.week"
+            required min="0" max="53" />
             <div [hidden]="!(editForm.controls.week?.dirty && editForm.controls.week?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.week?.errors?.required" jhiTranslate="entity.validation.required">
@@ -49,21 +51,8 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="timesheetApp.timesheet.year" for="field_year">Year</label>
             <input type="number" class="form-control" name="year" id="field_year"
-                [(ngModel)]="timesheet.year" required max="9999" />
-            <div [hidden]="!(editForm.controls.year?.dirty && editForm.controls.year?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.year?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.year?.errors?.max" jhiTranslate="entity.validation.max" translateValues="{ max: 9999 }">
-                    This field cannot be more than 9999.
-                </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.year?.errors?.number" jhiTranslate="entity.validation.number">
-                    This field should be a number.
-                </small>
-            </div>
+                [(ngModel)]="timesheet.year"
+             />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="timesheetApp.timesheet.submitAt" for="field_submitAt">Submit At</label>
@@ -82,7 +71,8 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="timesheetApp.timesheet.updatedBy" for="field_updatedBy">Updated By</label>
             <input type="text" class="form-control" name="updatedBy" id="field_updatedBy"
-                [(ngModel)]="timesheet.updatedBy"  />
+                [(ngModel)]="timesheet.updatedBy"
+             />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="timesheetApp.timesheet.summary" for="field_summary">Summary</label>
@@ -92,12 +82,8 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="timesheetApp.timesheet.totalHours" for="field_totalHours">Total Hours</label>
             <input type="number" class="form-control" name="totalHours" id="field_totalHours"
-                [(ngModel)]="timesheet.totalHours"  />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="timesheetApp.timesheet.status" for="field_status">Status</label>
-            <input type="number" class="form-control" name="status" id="field_status"
-                [(ngModel)]="timesheet.status"  />
+                [(ngModel)]="timesheet.totalHours"
+             />
         </div>
 
     </div>

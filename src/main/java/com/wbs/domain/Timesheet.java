@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -50,8 +52,23 @@ public class Timesheet implements Serializable {
 
     @Field("status")
     private Integer status;
+    
+    @Field("feedback")
+    private List<Feedback> feedback;
+    
+    public Timesheet() {
+		super();
+	}
 
-    public String getId() {
+	public Timesheet(String user, Integer week, Integer year) {
+		super();
+		this.user = user;
+		this.week = week;
+		this.year = year;
+		this.feedback = new ArrayList<Feedback>();
+	}
+
+	public String getId() {
         return id;
     }
 
@@ -175,6 +192,14 @@ public class Timesheet implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
+    
+	public List<Feedback> getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(List<Feedback> feedback) {
+		this.feedback = feedback;
+	}
 
     @Override
     public boolean equals(Object o) {
@@ -209,6 +234,8 @@ public class Timesheet implements Serializable {
             ", summary='" + getSummary() + "'" +
             ", totalHours='" + getTotalHours() + "'" +
             ", status='" + getStatus() + "'" +
+            ", feedback='" + getFeedback() + "'" +
             "}";
     }
+
 }

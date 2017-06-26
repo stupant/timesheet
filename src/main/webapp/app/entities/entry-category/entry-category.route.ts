@@ -5,7 +5,6 @@ import { UserRouteAccessService } from '../../shared';
 import { JhiPaginationUtil } from 'ng-jhipster';
 
 import { EntryCategoryComponent } from './entry-category.component';
-import { EntryCategoryDetailComponent } from './entry-category-detail.component';
 import { EntryCategoryPopupComponent } from './entry-category-dialog.component';
 import { EntryCategoryDeletePopupComponent } from './entry-category-delete-dialog.component';
 
@@ -34,14 +33,6 @@ export const entryCategoryRoute: Routes = [
         resolve: {
             'pagingParams': EntryCategoryResolvePagingParams
         },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'timesheetApp.entryCategory.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }, {
-        path: 'entry-category/:id',
-        component: EntryCategoryDetailComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'timesheetApp.entryCategory.home.title'

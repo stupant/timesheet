@@ -4,7 +4,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { Timesheet } from './timesheet.model';
 import { TimesheetService } from './timesheet.service';
-
 @Injectable()
 export class TimesheetPopupService {
     private isOpen = false;

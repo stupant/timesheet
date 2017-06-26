@@ -6,7 +6,6 @@ import {
     EntryCategoryService,
     EntryCategoryPopupService,
     EntryCategoryComponent,
-    EntryCategoryDetailComponent,
     EntryCategoryDialogComponent,
     EntryCategoryPopupComponent,
     EntryCategoryDeletePopupComponent,
@@ -28,7 +27,6 @@ const ENTITY_STATES = [
     ],
     declarations: [
         EntryCategoryComponent,
-        EntryCategoryDetailComponent,
         EntryCategoryDialogComponent,
         EntryCategoryDeleteDialogComponent,
         EntryCategoryPopupComponent,

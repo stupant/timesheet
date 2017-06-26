@@ -7,7 +7,7 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" [hidden]="!entry.id">
+        <!--div class="form-group" [hidden]="!entry.id">
             <label for="id" jhiTranslate="global.field.id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
                    [(ngModel)]="entry.id" readonly />
@@ -15,18 +15,20 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="timesheetApp.entry.user" for="field_user">User</label>
             <input type="text" class="form-control" name="user" id="field_user"
-                [(ngModel)]="entry.user" required />
+                [(ngModel)]="entry.user"
+            required />
             <div [hidden]="!(editForm.controls.user?.dirty && editForm.controls.user?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.user?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
             </div>
-        </div>
+        </div-->
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="timesheetApp.entry.hour" for="field_hour">Hour</label>
             <input type="number" class="form-control" name="hour" id="field_hour"
-                [(ngModel)]="entry.hour" required min="0" max="24" />
+                [(ngModel)]="entry.hour"
+            required min="0" max="24" />
             <div [hidden]="!(editForm.controls.hour?.dirty && editForm.controls.hour?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.hour?.errors?.required" jhiTranslate="entity.validation.required">
@@ -47,14 +49,10 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="timesheetApp.entry.notes" for="field_notes">Notes</label>
-            <textarea class="form-control" name="notes" id="field_notes"
-                [(ngModel)]="entry.notes"  ></textarea>
-        </div>
-        <div class="form-group">
             <label class="form-control-label" jhiTranslate="timesheetApp.entry.category" for="field_category">Category</label>
-            <input type="text" class="form-control" name="category" id="field_category"
-                [(ngModel)]="entry.category" required />
+            <select class="form-control" name="category" id="field_category" [(ngModel)]="entry.category" required >
+              <option *ngFor="let c of category.entities" value="{{c.name}}">{{c.name}}</option>
+            </select>
             <div [hidden]="!(editForm.controls.category?.dirty && editForm.controls.category?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.category?.errors?.required" jhiTranslate="entity.validation.required">
@@ -63,10 +61,15 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="timesheetApp.entry.notes" for="field_notes">Notes</label>
+            <textarea class="form-control" name="notes" id="field_notes" cols="80" rows="10" [(ngModel)]="entry.notes"  ></textarea>
+        </div>
+
+        <!--div class="form-group">
             <label class="form-control-label" jhiTranslate="timesheetApp.entry.day" for="field_day">Day</label>
             <div class="input-group">
                 <input id="field_day" type="text" class="form-control" name="day" ngbDatepicker  #dayDp="ngbDatepicker" [(ngModel)]="entry.day"
-                required/>
+                required [maxDate]="{ year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate() }"/>
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" (click)="dayDp.toggle()"><i class="fa fa-calendar"></i></button>
                 </span>
@@ -77,7 +80,7 @@
                    This field is required.
                 </small>
             </div>
-        </div>
+        </div-->
 
     </div>
     <div class="modal-footer">
@@ -89,3 +92,5 @@
         </button>
     </div>
 </form>
+
+{{ entry | json }}

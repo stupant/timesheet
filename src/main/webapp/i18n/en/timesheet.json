@@ -1,12 +1,25 @@
 {
     "timesheetApp": {
-        "timesheet" : {
+        "timesheet": {
+            "action": {
+                "approve": "Approve",
+                "reject": "Reject"
+            },
+            "menu": {
+                "timesheetAdmin": "Approve Timesheet",
+                "timesheet": "Timesheet"
+            },
             "home": {
                 "title": "Timesheets",
+                "admin": "Administration",
+                "previousLabel": "Previous week",
+                "currentLabel": "This week",
+                "nextLabel": "Next week",
                 "createLabel": "Create a new Timesheet",
                 "createOrEditLabel": "Create or edit a Timesheet"
             },
             "created": "A new Timesheet is created with identifier {{ param }}",
+            "created": "A new Timesheet is submited for approval with identifier {{ param }}",
             "updated": "A Timesheet is updated with identifier {{ param }}",
             "deleted": "A Timesheet is deleted with identifier {{ param }}",
             "delete": {
@@ -23,7 +36,13 @@
             "updatedBy": "Updated By",
             "summary": "Summary",
             "totalHours": "Total Hours",
-            "status": "Status"
+            "mon": "Monday",
+            "tue": "Tuesday",
+            "wed": "Wednesday",
+            "thu": "Thursday",
+            "fri": "Friday",
+            "sat": "Saturday",
+            "sun": "Sunday"
         }
     }
 }

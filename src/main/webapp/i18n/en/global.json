@@ -11,6 +11,7 @@
                 "entryCategory": "Entry Category",
                 "entry": "Entry",
                 "timesheet": "Timesheet",
+                "timesheetAdmin": "Timesheet Approval",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

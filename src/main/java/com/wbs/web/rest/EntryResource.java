@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +69,7 @@ public class EntryResource {
      * @param entry the entry to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated entry,
      * or with status 400 (Bad Request) if the entry is not valid,
-     * or with status 500 (Internal Server Error) if the entry couldn't be updated
+     * or with status 500 (Internal Server Error) if the entry couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/entries")
@@ -91,11 +93,40 @@ public class EntryResource {
      */
     @GetMapping("/entries")
     @Timed
-    public ResponseEntity<List<Entry>> getAllEntries(@ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Entries");
+    public ResponseEntity<List<Entry>> getAllEntries( @ApiParam Pageable pageable ) {
         Page<Entry> page = entryRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/entries");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+    /**
+     * GET  /entries : get all the entries.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of entries in body
+     */
+    @GetMapping("/lookup-entries/{email}/{year}/{week}")
+    @Timed
+    public ResponseEntity<List<Entry>> lookupEntries(
+    		@ApiParam @PathVariable("year") int year,
+    		@ApiParam @PathVariable("week") int week,
+    		@ApiParam @PathVariable("email") String email
+    	) {
+    	log.info("Gottal lookup for " + email + " time " + year  + "W" + week);
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, 0, 0, 0, 0, 0);
+        cal.set(Calendar.WEEK_OF_YEAR, week);
+        // FIXME: Calendar vs JS Calendar differ from each other...
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+//        LocalDate dateFrom = LocalDate.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+        Date dateFrom = cal.getTime();
+        cal.add(Calendar.DAY_OF_YEAR, 7);
+//        LocalDate dateTo = LocalDate.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+        Date dateTo = cal.getTime();
+        log.info("Date Range: " + dateFrom.toString() + " -- " + dateTo.toString());
+        
+        List<Entry> page = entryRepository.lookup(email, dateFrom, dateTo);
+        return ResponseEntity.ok().body(page);
     }
 
     /**
