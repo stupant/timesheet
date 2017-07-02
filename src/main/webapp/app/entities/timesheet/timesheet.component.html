@@ -44,6 +44,11 @@
           </div>
         </div>
       </div>
+      <div class="row text-center">
+        <div class="col" *ngFor="let i of timesheet.dow; let j=index;">
+          <p *ngIf="entries[date(j)]">{{ dateSummary(date(j)) | json }}</p>
+        </div>
+      </div>
     </div>
 
     <div class="timesheet-summary">
@@ -69,11 +74,16 @@
         <div class="card">
           <div class="card-block">
             <h3 class="card-title">Additional Info</h3>
+            <blockquote class="list-group-item" *ngFor="let f of timesheet.feedback"><strong>{{f.email}}</strong>: {{ f.comment }}</blockquote>
             <p class="card-text">Write your summary and press Submit</p>
             <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-              <div class="form-group">
+              <div class="form-group"  *ngIf="timesheet.status === null">
                   <textarea class="form-control" name="summary" id="field_summary" cols="80" rows="10"
                       [(ngModel)]="timesheet.summary"  ></textarea>
+              </div>
+              <div class="form-group" *ngIf="feedback.entity && (timesheet.status !== null)">
+                  <textarea class="form-control" name="comment" id="field_comment" cols="80" rows="10"
+                      [(ngModel)]="feedback.entity.comment"  ></textarea>
               </div>
               <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary pull-right">
                   <span class="fa fa-send"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>

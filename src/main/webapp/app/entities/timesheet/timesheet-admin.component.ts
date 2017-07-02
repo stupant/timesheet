@@ -26,7 +26,7 @@ export class TimesheetAdminComponent implements OnInit, OnDestroy {
     totalItems: number;
 
     constructor(
-        private timesheetService: TimesheetService,
+        public timesheetService: TimesheetService,
         private alertService: JhiAlertService,
         private dataUtils: JhiDataUtils,
         private eventManager: JhiEventManager,

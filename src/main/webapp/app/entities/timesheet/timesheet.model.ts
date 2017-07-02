@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import { Feedback } from '../feedback';
 export class Timesheet {
     today = new Date();
     dow = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
@@ -13,8 +14,10 @@ export class Timesheet {
         public summary?: any,
         public totalHours?: number,
         public status?: number, // null - not-processed, -1 = Rejected, 1 = Approved, 0 = Submited
+        public feedback?: Feedback[],
     ) {
         this.hasDate(new Date());
+        this.feedback = [];
     }
     hasDate(d: Date) {
         this.today = d;

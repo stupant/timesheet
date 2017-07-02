@@ -22,6 +22,15 @@ export const timesheetRoute: Routes = [
         },
         canActivate: [UserRouteAccessService]
     }, {
+        path: 'timesheet/:year/:week',
+        component: TimesheetComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'timesheetApp.timesheet.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
         path: 'timesheet-admin',
         component: TimesheetAdminComponent,
         data: {

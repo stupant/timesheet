@@ -4,7 +4,10 @@
             <i class="fa fa-bars"></i>
         </a>
         <a class="navbar-brand logo float-left" routerLink="/" (click)="collapseNavbar()">
-            <span class="logo-img"></span>
+            <svg class="pull-left" fill="#ffffff" height="45" viewBox="0 0 24 24" width="80" xmlns="http://www.w3.org/2000/svg">
+              <path d="M-618-568H782v3600H-618zM0 0h24v24H0z" fill="none"/>
+              <path d="M22 5.7l-4.6-3.9-1.3 1.5 4.6 3.9L22 5.7zM7.9 3.4L6.6 1.9 2 5.7l1.3 1.5 4.6-3.8zM12.5 8H11v6l4.7 2.9.8-1.2-4-2.4V8zM12 4c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm0 16c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7z"/>
+            </svg>
             <span jhiTranslate="global.title" class="navbar-title">Timesheet</span> <span class="navbar-version">{{version}}</span>
         </a>
     </div>
@@ -14,6 +17,24 @@
                 <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <span jhiTranslate="global.menu.home">Home</span>
+                </a>
+            </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                <a class="nav-link" routerLink="entry-category" (click)="collapseNavbar()">
+                  <i class="fa fa-fw fa-hashtag" aria-hidden="true"></i>
+                  <span jhiTranslate="global.menu.entities.entryCategory">Entry Category</span>
+                </a>
+            </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                <a class="nav-link" routerLink="timesheet-admin" (click)="collapseNavbar()">
+                  <i class="fa fa-fw fa-calendar-check-o" aria-hidden="true"></i>
+                  <span jhiTranslate="global.menu.entities.timesheetAdmin">Timesheet Administration</span>
+                </a>
+            </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *jhiHasAnyAuthority="'ROLE_USER','ROLE_ADMIN'">
+                <a class="nav-link" routerLink="timesheet" (click)="collapseNavbar()">
+                  <i class="fa fa-fw fa-calendar-check-o" aria-hidden="true"></i>
+                  <span jhiTranslate="global.menu.entities.timesheet">Timesheet</span>
                 </a>
             </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
@@ -32,18 +53,6 @@
                         <a class="dropdown-item" routerLink="entry-category" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-hashtag" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.entryCategory">Entry Category</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="timesheet-admin" routerLinkActive="active" (click)="collapseNavbar()" *jhiHasAnyAuthority="'ROLE_ADMIN'" >
-                            <i class="fa fa-fw fa-calendar-check-o" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.timesheetAdmin">Timesheet Administration</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="timesheet" routerLinkActive="active" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.timesheet">Timesheet</span>
                         </a>
                     </li>
                     <li>

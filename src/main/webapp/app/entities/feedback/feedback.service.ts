@@ -11,7 +11,7 @@ export class FeedbackService {
 
     private resourceUrl = 'api/feedbacks';
 
-    entity: Feedback;
+    entity: Feedback = new Feedback();
     entities: Feedback[];
 
     constructor(private http: Http, private dateUtils: JhiDateUtils) {

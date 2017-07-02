@@ -27,7 +27,7 @@
       <div class="row"> <div class="col-md-6">
         <div class="card">
           <div class="card-block">
-              <h3 class="card-title">Timesheet Entry Details</h3>
+              <h3 class="card-title">Timesheet Entry Details <small class="pull-right">{{ timesheet.status == -1 ? 'Rejected' : (timesheet.status == 1 ? 'Approved': 'NEED APPROVAL')}}</small></h3>
               <div class="list-group">
                 <div *ngFor="let e of entry.entities" class="list-group-item flex-column">
                   <div class="d-flex w-100 justify-content-between">
@@ -47,11 +47,16 @@
           <div class="card-block">
             <h3 class="card-title">Additional Info</h3>
             <blockquote class="card-blockquote">{{ timesheet.summary }}</blockquote>
+
+            <div class="list-group">
+              <blockquote class="list-group-item" *ngFor="let f of timesheet.feedback"><strong>{{f.email}}</strong>: {{ f.comment }}</blockquote>
+            </div>
+
             <p class="card-text">Write your response and press Approve or Reject</p>
             <form name="editForm" role="form" novalidate (ngSubmit)="accept()" #editForm="ngForm">
               <div class="form-group">
-                  <textarea class="form-control" name="summary" id="field_summary" cols="80" rows="10"
-                      [(ngModel)]="timesheet.summary"  ></textarea>
+                  <textarea class="form-control" name="comment" id="field_comment" cols="80" rows="10"
+                      [(ngModel)]="feedback.entity.comment"  ></textarea>
               </div>
               <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-success pull-right">
                   <span class="fa fa-check"></span>&nbsp;<span jhiTranslate="timesheetApp.timesheet.action.approve">Approve</span>

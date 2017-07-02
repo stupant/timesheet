@@ -5,6 +5,7 @@ import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiLanguageService, 
 
 import { Timesheet } from './timesheet.model';
 import { TimesheetService } from './timesheet.service';
+import { Feedback, FeedbackService } from '../feedback';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -35,6 +36,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
 
     constructor(
         public timesheetService: TimesheetService,
+        public feedback: FeedbackService,
         public entry: EntryService,
         private entryPopupService: EntryPopupService,
         private alertService: JhiAlertService,
@@ -42,6 +44,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         private eventManager: JhiEventManager,
         private parseLinks: JhiParseLinks,
         private principal: Principal,
+        private route: ActivatedRoute,
+        private router: Router,
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.page = 0;
@@ -52,11 +56,20 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         this.reverse = true;
     }
 
-    loadAll() {
+    loadAll(year?: number, week?: number) {
         this.entries = {};
+        if (year) { this.timesheet.year = year; }
+        if (week) { this.timesheet.week = week; }
+        console.log('Loading year + week', this.timesheet.year, this.timesheet.week);
+        this.feedback.entity = new Feedback();
         this.timesheetService.lookup(this.timesheet.user, this.timesheet.year, this.timesheet.week).subscribe(
-            (ts: ResponseWrapper) => this.timesheet = Object.assign(this.timesheet, ts.json),
-            (err) => console.error(err)
+            (ts: ResponseWrapper) => {
+              this.timesheet = Object.assign(this.timesheet, ts.json);
+              if (!this.timesheet.feedback) {
+                  this.timesheet.feedback = [];
+              }
+            },
+            (err) => this.timesheet = Object.assign(this.timesheet, { summary: '', status: null, totalHours: 0,  feedback: [] })
         );
         this.entry.lookup(this.timesheet.user, this.timesheet.year, this.timesheet.week).subscribe(
             (res: ResponseWrapper) => {
@@ -89,7 +102,10 @@ export class TimesheetComponent implements OnInit, OnDestroy {
         this.principal.identity().then((account) => {
             this.currentAccount = account;
             this.timesheet.user = this.currentAccount.email;
-            this.loadAll();
+            this.route.params.subscribe((params) => {
+                this.loadAll(params['year'], params['week']);
+            }, (err) => this.loadAll());
+
         });
         this.registerChangeInTimesheets();
     }
@@ -124,15 +140,18 @@ export class TimesheetComponent implements OnInit, OnDestroy {
 
     prev() {
         this.timesheet.hasDate(moment(this.timesheet.today.toString()).subtract(7, 'days').toDate());
-        this.loadAll();
+        // this.loadAll();
+        this.router.navigate(['timesheet/' + this.timesheet.year + '/' + this.timesheet.week]);
     }
     next() {
         this.timesheet.hasDate(moment(this.timesheet.today.toString()).add(7, 'days').toDate());
-        this.loadAll();
+        // this.loadAll();
+        this.router.navigate(['timesheet/' + this.timesheet.year + '/' + this.timesheet.week]);
     }
     cur() {
-        this.timesheet.hasDate(new Date());
-        this.loadAll();
+        // this.timesheet.hasDate(new Date());
+        // this.loadAll();
+        this.router.navigate(['timesheet']);
     }
     date(i: number) {
         return moment().week(this.timesheet.week).year(this.timesheet.year).day(i).format('YYYY-MM-DD');
@@ -155,7 +174,13 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     save() {
         this.isSaving = true;
         this.timesheet.totalHours = this.totalHours;
-        this.timesheet.status = 0; // Submit for Approval
+        this.timesheet.status = 0; // Submitted
+        // add Feedback to timesheet
+        if (this.feedback.entity.comment !== '') {
+            this.feedback.entity.email = this.currentAccount.email;
+            this.feedback.entity.time = new Date();
+            this.timesheet.feedback.push(this.feedback.entity);
+        }
         this.timesheetService.update(this.timesheet).subscribe(
             (result: Timesheet) => {
                 console.log('Timesheet return from server', result);
@@ -183,6 +208,18 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
 
     checkDate(i: string): boolean {
-      return i > (new Date()).toISOString();
+        return i > (new Date()).toISOString();
+    }
+
+    dateSummary(i: string): any {
+        const result = { hours: 0, ot: 0, ut: 0 };
+        if (this.entries[i]) {
+            this.entries[i].forEach((item) => {
+                result.hours += item.hour;
+            });
+        }
+        if (result.hours < 8) { result.ut = 8 - result.hours; }
+        if (result.hours > 8) { result.ot = result.hours - 8; }
+        return result;
     }
 }

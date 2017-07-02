@@ -6,7 +6,8 @@ import { JhiEventManager, JhiDataUtils, JhiAlertService } from 'ng-jhipster';
 import { Timesheet } from './timesheet.model';
 import { TimesheetService } from './timesheet.service';
 import { Entry, EntryService } from '../entry';
-import { ResponseWrapper } from '../../shared';
+import { ResponseWrapper, Principal } from '../../shared';
+import { Feedback, FeedbackService } from '../feedback';
 import * as moment from 'moment';
 
 @Component({
@@ -21,14 +22,17 @@ export class TimesheetDetailComponent implements OnInit, OnDestroy {
     totalHours: number;
     entries: any = {};
     isSaving = false;
+    currentAccount = { email: '' };
 
     constructor(
         public entry: EntryService,
+        public feedback: FeedbackService,
         private eventManager: JhiEventManager,
         private dataUtils: JhiDataUtils,
         private timesheetService: TimesheetService,
         private route: ActivatedRoute,
         private alertService: JhiAlertService,
+        private principal: Principal,
     ) {
         this.totalHours = 0;
         this.entries = [];
@@ -36,16 +40,24 @@ export class TimesheetDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
+        this.principal.identity().then((account) => {
+            this.currentAccount = account;
+            this.feedback.entity.email = account.email;
+            this.feedback.entity.time = new Date();
+            this.subscription = this.route.params.subscribe((params) => {
+                this.load(params['id']);
+            });
+            this.registerChangeInTimesheets();
         });
-        this.registerChangeInTimesheets();
     }
 
     load(id) {
         this.entries = {};
         this.timesheetService.find(id).subscribe((timesheet: Timesheet) => {
             this.timesheet = Object.assign(new Timesheet(), timesheet);
+            if (!this.timesheet.feedback) {
+                this.timesheet.feedback = [];
+            }
             console.log(this.timesheet);
             this.entry.lookup(this.timesheet.user, this.timesheet.year, this.timesheet.week).subscribe(
                 (res: ResponseWrapper) => {
@@ -95,6 +107,10 @@ export class TimesheetDetailComponent implements OnInit, OnDestroy {
     accept() {
         this.isSaving = true;
         this.timesheet.status = 1; // Submit for Approval
+        // add Feedback to timesheet
+        if (this.feedback.entity.comment !== '') {
+            this.timesheet.feedback.push(this.feedback.entity);
+        }
         this.timesheetService.update(this.timesheet).subscribe(
             (result: Timesheet) => {
                 console.log('Timesheet return from server', result);
@@ -109,6 +125,9 @@ export class TimesheetDetailComponent implements OnInit, OnDestroy {
     reject() {
         this.isSaving = true;
         this.timesheet.status = -1; // Submit for Approval
+        if (this.feedback.entity.comment !== '') {
+            this.timesheet.feedback.push(this.feedback.entity);
+        }
         this.timesheetService.update(this.timesheet).subscribe(
             (result: Timesheet) => {
                 console.log('Timesheet return from server', result);

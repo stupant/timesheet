@@ -123,6 +123,25 @@ Then run:
 
 For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
 
+## Deployment to Heroku
+
+In order to deploy the app on Heroku, following these steps:
+
+~~~bash
+$ # Create the application on Heroku
+$ heroku create
+$
+$ # Deployment of the app
+$ yo jhipster:heroku
+$
+$ # Install heroku additional plugin
+$ heroku plugins:install heroku-cli-deploy
+$
+$ # After first deployment, run the command to rebuild and deploy it
+$ mvn package -DskipTests=true -B -Pprod
+$ heroky deploy:jar --jar target/*.war
+
+~~~
 ## Continuous Integration (optional)
 
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
