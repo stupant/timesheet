@@ -2,34 +2,34 @@
     "timesheetApp": {
         "timesheet" : {
             "home": {
-                "title": "Timesheets",
-                "createLabel": "Thêm mới một Timesheet",
-                "createOrEditLabel": "Thêm mới hoặc cập nhật Timesheet"
+                "title": "Thời gian biểu",
+                "createLabel": "Thêm mới một Thời gian biểu",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Thời gian biểu"
             },
-            "created": "Một Timesheet mới được tạo với định danh {{ param }}",
-            "updated": "Một Timesheet cập nhật với định danh {{ param }}",
-            "deleted": "Một Timesheet đã xóa với định danh {{ param }}",
+            "created": "Một Thời gian biểu mới được tạo với định danh {{ param }}",
+            "updated": "Một Thời gian biểu cập nhật với định danh {{ param }}",
+            "deleted": "Một Thời gian biểu đã xóa với định danh {{ param }}",
             "delete": {
                 "question": "Bạn có chắc là muốn xóa Timesheet {{ id }}?"
             },
             "detail": {
-                "title": "Timesheet"
+                "title": "Thời gian biểu"
             },
-            "user": "User",
-            "week": "Week",
-            "year": "Year",
-            "submitAt": "Submit At",
-            "updatedAt": "Updated At",
-            "updatedBy": "Updated By",
-            "summary": "Summary",
-            "totalHours": "Total Hours",
-            "mon": "Monday",
-            "tue": "Tuesday",
-            "wed": "Wednesday",
-            "thu": "Thursday",
-            "fri": "Friday",
-            "sat": "Saturday",
-            "sun": "Sunday"
+            "user": "Người dùng",
+            "week": "Tuần",
+            "year": "Năm",
+            "submitAt": "Gửi lúc",
+            "updatedAt": "Sửa lúc",
+            "updatedBy": "Sửa bởi",
+            "summary": "Tổng hợp",
+            "totalHours": "Tổng số giờ",
+            "mon": "Thứ Hai",
+            "tue": "Thứ Ba",
+            "wed": "Thứ Tư",
+            "thu": "Thứ Năm",
+            "fri": "Thứ Sáu",
+            "sat": "Thứ Bảy",
+            "sun": "Chủ Nhật"
         }
     }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager, JhiDataUtils, JhiAlertService } from 'ng-jhipster';
-import { Response } from '@angular/http';
+
 import { Timesheet } from './timesheet.model';
 import { TimesheetService } from './timesheet.service';
 import { Entry, EntryService } from '../entry';
@@ -152,11 +152,5 @@ export class TimesheetDetailComponent implements OnInit, OnDestroy {
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
-    }
-
-    exportPdf() {
-        const htmlData = document.getElementById('timesheet').innerHTML;
-        console.log('Export PDF from HTML', htmlData);
-        this.timesheetService.exportPdf(htmlData).subscribe((response: Response) => this.dataUtils.openFile('application/pdf', response.text()), (err) => this.onError(err));
     }
 }

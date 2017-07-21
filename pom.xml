@@ -84,6 +84,7 @@
         <!-- Spring properties -->
         <springfox.version>2.6.1</springfox.version>
         <yarn.version>v0.24.6</yarn.version>
+        <openhtml.version>0.0.1-RC11</openhtml.version>
     </properties>
 
 
@@ -330,7 +331,48 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-messaging</artifactId>
         </dependency>
-        <!-- jhipster-needle-maven-add-dependency -->
+		<dependency>
+  		<!-- ALWAYS required. -->
+  		<groupId>com.openhtmltopdf</groupId>
+  		<artifactId>openhtmltopdf-core</artifactId>
+  		<version>${openhtml.version}</version>
+  	</dependency>
+  	
+  	<dependency>
+  		<!-- Required for PDF output. -->
+  		<groupId>com.openhtmltopdf</groupId>
+  		<artifactId>openhtmltopdf-pdfbox</artifactId>
+  		<version>${openhtml.version}</version>
+  	</dependency>
+  	
+  	<dependency>
+  		<!-- Required for image output only. -->  	
+  		<groupId>com.openhtmltopdf</groupId>
+  		<artifactId>openhtmltopdf-java2d</artifactId>
+  		<version>${openhtml.version}</version>
+  	</dependency>
+  	
+  	<dependency>
+  		<!-- Optional, leave out if you do not need right-to-left or bi-directional text support. -->
+  		<groupId>com.openhtmltopdf</groupId>
+  		<artifactId>openhtmltopdf-rtl-support</artifactId>
+  		<version>${openhtml.version}</version>
+  	</dependency>
+  	
+  	<dependency>
+        <!-- Optional, leave out if you do not need HTML5 parsing support. -->
+  		<groupId>com.openhtmltopdf</groupId>
+  		<artifactId>openhtmltopdf-jsoup-dom-converter</artifactId>
+  		<version>${openhtml.version}</version>
+  	</dependency>
+  	<dependency>
+  	    <!-- Optional, leave out if you do not SVG support. -->
+  		<groupId>com.openhtmltopdf</groupId>
+  		<artifactId>openhtmltopdf-svg-support</artifactId>
+  		<version>${openhtml.version}</version>
+  	</dependency>
+				
+		        
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
@@ -480,7 +522,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${docker-maven-plugin.version}</version>
                 <configuration>
-                    <imageName>timesheet</imageName>
+                    <imageName>registry.gitlab.com/nguyendinhtrung141/timesheet</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
                     <resources>
                         <resource>

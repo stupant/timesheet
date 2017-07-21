@@ -15,6 +15,8 @@ export class Timesheet {
         public totalHours?: number,
         public status?: number, // null - not-processed, -1 = Rejected, 1 = Approved, 0 = Submited
         public feedback?: Feedback[],
+        public fileContentType?: string,
+        public file?: any,
     ) {
         this.hasDate(new Date());
         this.feedback = [];

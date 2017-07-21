@@ -238,4 +238,34 @@ public class Timesheet implements Serializable {
             "}";
     }
 
+    /** Extra attributes for file export & import **/
+    private byte[] file;
+	private String fileContentType;
+    
+    public byte[] getFile() {
+        return file;
+    }
+
+    public Timesheet file(byte[] file) {
+        this.file = file;
+        return this;
+    }
+
+    public void setFile(byte[] file) {
+        this.file = file;
+    }
+
+    public String getFileContentType() {
+        return fileContentType;
+    }
+
+    public Timesheet fileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
+        return this;
+    }
+
+    public void setFileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
+    }
+
 }

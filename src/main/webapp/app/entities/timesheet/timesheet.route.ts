@@ -9,13 +9,14 @@ import { TimesheetAdminComponent } from './timesheet-admin.component';
 import { TimesheetDetailComponent } from './timesheet-detail.component';
 import { TimesheetPopupComponent } from './timesheet-dialog.component';
 import { TimesheetDeletePopupComponent } from './timesheet-delete-dialog.component';
+import { TimesheetEntryComponent } from './timesheet-entry.component';
 
 import { Principal } from '../../shared';
 
 export const timesheetRoute: Routes = [
     {
         path: 'timesheet',
-        component: TimesheetComponent,
+        component: TimesheetEntryComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'timesheetApp.timesheet.home.title'
@@ -23,7 +24,7 @@ export const timesheetRoute: Routes = [
         canActivate: [UserRouteAccessService]
     }, {
         path: 'timesheet/:year/:week',
-        component: TimesheetComponent,
+        component: TimesheetEntryComponent,
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'timesheetApp.timesheet.home.title'

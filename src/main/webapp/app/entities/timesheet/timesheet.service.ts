@@ -55,6 +55,10 @@ export class TimesheetService {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
 
+    exportPdf(html: String): Observable<Response> {
+      return this.http.post('api/convertHtmlToPdf', html);
+    }
+
     private convertResponse(res: Response): ResponseWrapper {
         const jsonResponse = res.json();
         for (let i = 0; i < jsonResponse.length; i++) {

@@ -1,3 +1,4 @@
+<jhi-alert-error></jhi-alert-error>
 
 <div *ngIf="timesheet">
 
@@ -5,70 +6,72 @@
       <i class="pull-right">Date: {{ date(0) }} to {{ date(6) }}</i>
       <span jhiTranslate="timesheetApp.timesheet.detail.title">Timesheets</span> {{ timesheet.year }} week {{ timesheet.week }}
     </h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <div class="timesheet-detail card-block">
-      <div class="row text-center">
-        <div class="col" *ngFor="let i of timesheet.dow; let j=index;">
-          <h4 jhiTranslate="timesheetApp.timesheet.{{i}}">{{ i }}</h4>
-          <small>{{ date(j) }}</small>
-          <hr/>
-          <ul class="list-group">
-            <li *ngFor="let e of entries[date(j)]" class="list-group-item list-group-item-action  justify-content-between" ngbTooltip="{{ e.notes }}">
-              {{ e.category }}
-              <span class="badge badge-success badge-pill"><i class="fa fa-clock-o"></i> {{ e.hour }}</span>
-            </li>
-          </ul>
+    <hr/>
+
+    <div id="timesheet">
+      <div class="timesheet-detail card-block">
+        <div class="row text-center">
+          <div class="col" *ngFor="let i of timesheet.dow; let j=index;">
+            <h4 jhiTranslate="timesheetApp.timesheet.{{i}}">{{ i }}</h4>
+            <small>{{ date(j) }}</small>
+            <ul class="list-group">
+              <li *ngFor="let e of entries[date(j)]" class="list-group-item list-group-item-action  justify-content-between" ngbTooltip="{{ e.notes }}">
+                {{ e.category }}
+                <span class="badge badge-success badge-pill"><i class="fa fa-clock-o"></i> {{ e.hour }}</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="timesheet-summary">
-      <div class="row"> <div class="col-md-6">
-        <div class="card">
-          <div class="card-block">
-              <h3 class="card-title">Timesheet Entry Details <small class="pull-right">{{ timesheet.status == -1 ? 'Rejected' : (timesheet.status == 1 ? 'Approved': 'NEED APPROVAL')}}</small></h3>
-              <div class="list-group">
-                <div *ngFor="let e of entry.entities" class="list-group-item flex-column">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ e.category }}</h5>
-                    <h6><span class="badge badge-success badge-pill"><i class="fa fa-clock-o"></i> {{ e.hour }}</span></h6>
+      <div class="timesheet-summary">
+        <div class="row"> <div class="col-md-6">
+          <div class="card">
+            <div class="card-block">
+                <h3 class="card-title">Timesheet Entry Details <small class="pull-right">{{ timesheet.status == -1 ? 'Rejected' : (timesheet.status == 1 ? 'Approved': 'NEED APPROVAL')}}</small></h3>
+                <div class="list-group">
+                  <div *ngFor="let e of entry.entities" class="list-group-item flex-column">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">{{ e.category }}</h5>
+                      <h6><span class="badge badge-success badge-pill"><i class="fa fa-clock-o"></i> {{ e.hour }}</span></h6>
+                    </div>
+                    <p class="mb-1">{{ e.notes }}</p>
                   </div>
-                  <p class="mb-1">{{ e.notes }}</p>
+                  <div class="list-group-item flex-column active">
+                    <h5 class="mb-1">Total: {{ totalHours }} hours</h5>
+                  </div>
                 </div>
-                <div class="list-group-item flex-column active">
-                  <h5 class="mb-1">Total: {{ totalHours }} hours</h5>
-                </div>
-              </div>
-          </div>
-        </div>
-      </div> <div class="col-md-6">
-        <div class="card">
-          <div class="card-block">
-            <h3 class="card-title">Additional Info</h3>
-            <blockquote class="card-blockquote">{{ timesheet.summary }}</blockquote>
-
-            <div class="list-group">
-              <blockquote class="list-group-item" *ngFor="let f of timesheet.feedback"><strong>{{f.email}}</strong>: {{ f.comment }}</blockquote>
             </div>
+          </div>
+        </div> <div class="col-md-6">
+          <div class="card">
+            <div class="card-block">
+              <h3 class="card-title">Additional Info</h3>
+              <blockquote class="card-blockquote">{{ timesheet.summary }}</blockquote>
 
-            <p class="card-text">Write your response and press Approve or Reject</p>
-            <form name="editForm" role="form" novalidate (ngSubmit)="accept()" #editForm="ngForm">
-              <div class="form-group">
-                  <textarea class="form-control" name="comment" id="field_comment" cols="80" rows="10"
-                      [(ngModel)]="feedback.entity.comment"  ></textarea>
+              <div class="list-group">
+                <blockquote class="list-group-item" *ngFor="let f of timesheet.feedback"><strong>{{f.email}}</strong>: {{ f.comment }}</blockquote>
               </div>
-              <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-success pull-right">
-                  <span class="fa fa-check"></span>&nbsp;<span jhiTranslate="timesheetApp.timesheet.action.approve">Approve</span>
-              </button>
-              <button type="button" [disabled]="editForm.form.invalid || isSaving" class="btn btn-danger" (click)="reject()">
-                  <span class="fa fa-bug"></span>&nbsp;<span jhiTranslate="timesheetApp.timesheet.action.reject">Reject</span>
-              </button>
-            </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
+    <p class="card-text">Write your response and press Approve or Reject</p>
+    <form name="editForm" role="form" novalidate (ngSubmit)="accept()" #editForm="ngForm">
+      <div class="form-group">
+          <textarea class="form-control" name="comment" id="field_comment" cols="80" rows="10"
+              [(ngModel)]="feedback.entity.comment"  ></textarea>
+      </div>
+      <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-success pull-right">
+          <span class="fa fa-check"></span>&nbsp;<span jhiTranslate="timesheetApp.timesheet.action.approve">Approve</span>
+      </button>
+      <button type="button" [disabled]="editForm.form.invalid || isSaving" class="btn btn-danger" (click)="reject()">
+          <span class="fa fa-bug"></span>&nbsp;<span jhiTranslate="timesheetApp.timesheet.action.reject">Reject</span>
+      </button>
+
+      <button type="button" (click)="exportPdf()" class="btn btn-primary"><span class="fa fa-download">Export PDF</button>
+    </form>
+  </div>
 </div>

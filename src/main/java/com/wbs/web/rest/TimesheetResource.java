@@ -4,10 +4,14 @@ import com.codahale.metrics.annotation.Timed;
 import com.wbs.domain.Timesheet;
 
 import com.wbs.repository.TimesheetRepository;
+import com.wbs.service.PdfConverter;
 import com.wbs.web.rest.util.HeaderUtil;
 import com.wbs.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -18,9 +22,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,8 +45,11 @@ public class TimesheetResource {
 
     private final TimesheetRepository timesheetRepository;
 
-    public TimesheetResource(TimesheetRepository timesheetRepository) {
+    private final PdfConverter converter;
+
+    public TimesheetResource(TimesheetRepository timesheetRepository, PdfConverter converter) {
         this.timesheetRepository = timesheetRepository;
+        this.converter = converter;
     }
 
     /**
@@ -138,5 +149,27 @@ public class TimesheetResource {
         log.debug("REST request to delete Timesheet : {}", id);
         timesheetRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+    }
+    
+    /**
+     * POST  /timesheets : Create a new timesheet.
+     *
+     * @param timesheet the timesheet to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new timesheet, or with status 400 (Bad Request) if the timesheet has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws DocumentException 
+     * @throws IOException 
+     */
+    @PostMapping("/convertHtmlToPdf")
+    @Timed
+    public ResponseEntity<byte[]> exportPdfTimesheet(@Valid @RequestBody String html) throws URISyntaxException, IOException {
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	html = StringEscapeUtils.unescapeHtml4(html);
+    	String css = FileUtils.readFileToString(new File(getClass().getClassLoader().getResource("mails/style.css").getPath()), "UTF-8");
+		converter.convertHtmlToPdf(html, css, bos);
+
+        return ResponseEntity.created(new URI("/api/convertHtmlToPdf"))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, null))
+            .body(Base64.getEncoder().encode(bos.toByteArray()));
     }
 }

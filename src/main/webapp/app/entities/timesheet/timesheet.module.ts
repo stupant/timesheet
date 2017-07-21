@@ -14,6 +14,7 @@ import {
     timesheetRoute,
     timesheetPopupRoute,
     TimesheetAdminComponent,
+    TimesheetEntryComponent,
 } from './';
 
 const ENTITY_STATES = [
@@ -34,6 +35,7 @@ const ENTITY_STATES = [
         TimesheetPopupComponent,
         TimesheetDeletePopupComponent,
         TimesheetAdminComponent,
+        TimesheetEntryComponent,
     ],
     entryComponents: [
         TimesheetComponent,
@@ -42,6 +44,7 @@ const ENTITY_STATES = [
         TimesheetPopupComponent,
         TimesheetDeleteDialogComponent,
         TimesheetDeletePopupComponent,
+        TimesheetEntryComponent,
     ],
     providers: [
         TimesheetService,
